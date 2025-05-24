@@ -399,6 +399,9 @@ if(!isset($_GET['species']) && !isset($_GET['filename'])){
       <button <?php if(isset($_GET['sort']) && $_GET['sort'] == "confidence"){ echo "class='sortbutton active'";} else { echo "class='sortbutton'"; }?> type="submit" name="sort" value="confidence">
          <img src="images/sort_conf.svg" title="Sort by confidence" alt="Sort by confidence">
       </button>
+      <button <?php if(isset($_GET['sort']) && $_GET['sort'] == "date"){ echo "class='sortbutton active'";} else { echo "class='sortbutton'"; }?> type="submit" name="sort" value="date">
+         <img src="images/sort_date.svg" title="Sort by date" alt="Sort by date">
+      </button>
    </form>
 </div>
 <br>
@@ -432,6 +435,8 @@ if(!isset($_GET['species']) && !isset($_GET['filename'])){
             } else {
                 $values[] = ' (' . $valuescount . ')';
             }
+      } elseif ($_GET['sort'] == "date") {
+            $values[] = ' (' . $results['Date'] . ')';
       }
     }
 
