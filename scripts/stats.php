@@ -12,16 +12,6 @@ $home = get_home();
 
 $result = fetch_species_array($_GET['sort']);
 
-$db = new SQLite3('./scripts/birds.db', SQLITE3_OPEN_READONLY);
-$db->busyTimeout(1000);
-
-if(isset($_GET['species'])){
-  $selection = htmlspecialchars_decode($_GET['species'], ENT_QUOTES);
-  $statement3 = $db->prepare("SELECT Com_Name, Sci_Name, COUNT(*), MAX(Confidence), File_Name, Date, Time from detections WHERE Com_Name = \"$selection\"");
-  ensure_db_ok($statement3);
-  $result3 = $statement3->execute();
-}
-
 if(!file_exists($home."/BirdNET-Pi/scripts/disk_check_exclude.txt") || strpos(file_get_contents($home."/BirdNET-Pi/scripts/disk_check_exclude.txt"),"##start") === false) {
   file_put_contents($home."/BirdNET-Pi/scripts/disk_check_exclude.txt", "");
   file_put_contents($home."/BirdNET-Pi/scripts/disk_check_exclude.txt", "##start\n##end\n");
@@ -152,6 +142,7 @@ function setModalText(iter, title, text, authorlink) {
   $species = $_GET['species'];
   $iter=0;
   $config = get_config();
+  $result3 = fetch_best_detection(htmlspecialchars_decode($_GET['species'], ENT_QUOTES));
 while($results=$result3->fetchArray(SQLITE3_ASSOC)){
   $count = $results['COUNT(*)'];
   $maxconf = round((float)round($results['MAX(Confidence)'],2) * 100 ) . '%';
