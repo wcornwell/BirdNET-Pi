@@ -10,39 +10,10 @@ ini_set('display_errors', 0);
 require_once 'scripts/common.php';
 $home = get_home();
 
+$result = fetch_species_array($_GET['sort']);
+
 $db = new SQLite3('./scripts/birds.db', SQLITE3_OPEN_READONLY);
 $db->busyTimeout(1000);
-
-if(isset($_GET['sort']) && $_GET['sort'] == "occurrences") {
-  
-  $statement = $db->prepare('SELECT Date, Time, File_Name, Com_Name, COUNT(*), MAX(Confidence) FROM detections GROUP BY Com_Name ORDER BY COUNT(*) DESC');
-  ensure_db_ok($statement);
-  $result = $statement->execute();
-
-  $statement2 = $db->prepare('SELECT Date, Time, File_Name, Com_Name, COUNT(*), MAX(Confidence) FROM detections GROUP BY Com_Name ORDER BY COUNT(*) DESC');
-  ensure_db_ok($statement2);
-  $result2 = $statement2->execute();
-
-} else if(isset($_GET['sort']) && $_GET['sort'] == "confidence") {
-  $statement = $db->prepare('SELECT Date, Time, File_Name, Com_Name, COUNT(*), MAX(Confidence) FROM detections GROUP BY Com_Name ORDER BY MAX(Confidence) DESC');
-  ensure_db_ok($statement);
-  $result = $statement->execute();
-
-  $statement2 = $db->prepare('SELECT Date, Time, File_Name, Com_Name, COUNT(*), MAX(Confidence) FROM detections GROUP BY Com_Name ORDER BY MAX(Confidence) DESC');
-  ensure_db_ok($statement2);
-  $result2 = $statement2->execute();
-
-} else {
-
-  $statement = $db->prepare('SELECT Date, Time, File_Name, Com_Name, COUNT(*), MAX(Confidence) FROM detections GROUP BY Com_Name ORDER BY Com_Name ASC');
-  ensure_db_ok($statement);
-  $result = $statement->execute();
-
-  $statement2 = $db->prepare('SELECT Date, Time, File_Name, Com_Name, COUNT(*), MAX(Confidence) FROM detections GROUP BY Com_Name ORDER BY Com_Name ASC');
-  ensure_db_ok($statement2);
-  $result2 = $statement2->execute();
-}
-
 
 if(isset($_GET['species'])){
   $selection = htmlspecialchars_decode($_GET['species'], ENT_QUOTES);
@@ -94,16 +65,16 @@ if (get_included_files()[0] === __FILE__) {
   $birds = array();
   $values = array();
 
-  while($results=$result2->fetchArray(SQLITE3_ASSOC))
+  while($results=$result->fetchArray(SQLITE3_ASSOC))
   {
     $comname = preg_replace('/ /', '_', $results['Com_Name']);
     $comname = preg_replace('/\'/', '', $comname);
     $filename = "/By_Date/".$results['Date']."/".$comname."/".$results['File_Name'];
     $birds[] = $results['Com_Name'];
     if ($_GET['sort'] == "confidence") {
-        $values[] = ' (' . round($results['MAX(Confidence)'] * 100) . '%)';
+        $values[] = ' (' . round($results['MaxConfidence'] * 100) . '%)';
     } elseif ($_GET['sort'] == "occurrences") {
-        $valuescount = $results['COUNT(*)'];
+        $valuescount = $results['Count'];
         if ($valuescount >= 1000) {
             $values[] = ' (' . round($valuescount / 1000, 1) . 'k)';
         } else {
@@ -249,8 +220,8 @@ array_push($excludelines, $results['Date']."/".$comname."/".$results['File_Name'
 ?>
       <tr>
       <td class="relative"><a target="_blank" href="index.php?filename=<?php echo $results['File_Name']; ?>"><img title="Open in new tab" class="copyimage" width=25 src="images/copy.png"></a>
-        <button type="submit" name="species" value="<?php echo $results['Com_Name'];?>"><?php echo $results['Com_Name'];?></button><br><b>Occurrences:</b> <?php echo $results['COUNT(*)'];?><br>
-      <b>Max Confidence:</b> <?php echo $percent = round((float)round($results['MAX(Confidence)'],2) * 100 ) . '%';?><br>
+        <button type="submit" name="species" value="<?php echo $results['Com_Name'];?>"><?php echo $results['Com_Name'];?></button><br><b>Occurrences:</b> <?php echo $results['Count'];?><br>
+      <b>Max Confidence:</b> <?php echo $percent = round((float)round($results['MaxConfidence'],2) * 100 ) . '%';?><br>
       <b>Best Recording:</b> <?php echo $results['Date']." ".$results['Time'];?><br><video onplay='setLiveStreamVolume(0)' onended='setLiveStreamVolume(1)' onpause='setLiveStreamVolume(1)' controls poster="<?php echo $filename.".png";?>" preload="none" title="<?php echo $filename;?>"><source src="<?php echo $filename;?>" type="audio/mp3"></video></td>
       </tr>
 <?php

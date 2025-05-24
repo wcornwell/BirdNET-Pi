@@ -136,29 +136,12 @@ if(isset($_GET['bydate'])){
   $date = $_GET['date'];
   session_start();
   $_SESSION['date'] = $date;
-  if(isset($_GET['sort']) && $_GET['sort'] == "occurrences") {
-    $statement = $db->prepare("SELECT DISTINCT(Com_Name), COUNT(Com_Name) AS Count FROM detections WHERE Date == \"$date\" GROUP BY Com_Name ORDER BY COUNT(*) DESC");
-  } elseif(isset($_GET['sort']) && $_GET['sort'] == "confidence") {
-    $statement = $db->prepare("SELECT Com_Name, Sci_Name, MAX(Confidence) as MaxConfidence FROM detections WHERE Date == \"$date\" GROUP BY Com_Name ORDER BY MaxConfidence DESC");
-  } else {
-    $statement = $db->prepare("SELECT DISTINCT(Com_Name) FROM detections WHERE Date == \"$date\" ORDER BY Com_Name");
-  }
-  ensure_db_ok($statement);
-  $result = $statement->execute();
+  $result = fetch_species_array($_GET['sort'], $date);
   $view = "date";
 
   #By Species
 } elseif(isset($_GET['byspecies'])) {
-  if(isset($_GET['sort']) && $_GET['sort'] == "occurrences") {
-    $statement = $db->prepare('SELECT DISTINCT(Com_Name), COUNT(Com_Name) AS Count FROM detections GROUP BY Com_Name ORDER BY COUNT(*) DESC');
-  } elseif(isset($_GET['sort']) && $_GET['sort'] == "confidence") {
-    $statement = $db->prepare('SELECT Com_Name, Sci_Name, MAX(Confidence) as MaxConfidence FROM detections GROUP BY Com_Name ORDER BY MaxConfidence DESC');
-  } else {
-    $statement = $db->prepare('SELECT DISTINCT(Com_Name) FROM detections ORDER BY Com_Name ASC');
-  } 
-  session_start();
-  ensure_db_ok($statement);
-  $result = $statement->execute();
+  $result = fetch_species_array($_GET['sort']);
   $view = "byspecies";
 
   #Specific Species
