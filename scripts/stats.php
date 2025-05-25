@@ -64,18 +64,7 @@ if (get_included_files()[0] === __FILE__) {
     $comname = preg_replace('/\'/', '', $comname);
     $filename = "/By_Date/".$results['Date']."/".$comname."/".$results['File_Name'];
     $birds[] = $results['Com_Name'];
-    if ($_GET['sort'] == "confidence") {
-        $values[] = ' (' . round($results['MaxConfidence'] * 100) . '%)';
-    } elseif ($_GET['sort'] == "occurrences") {
-        $valuescount = $results['Count'];
-        if ($valuescount >= 1000) {
-            $values[] = ' (' . round($valuescount / 1000, 1) . 'k)';
-        } else {
-            $values[] = ' (' . $valuescount . ')';
-        }
-    } elseif ($_GET['sort'] == "date") {
-        $values[] = ' (' . $results['Date'] . ')';
-    }
+    $values[] = get_label($results, $_GET['sort']);
   }
 
   if(count($birds) > 45) {
@@ -94,7 +83,7 @@ if (get_included_files()[0] === __FILE__) {
       if ($index < count($birds)) {
         ?>
         <td>
-            <button type="submit" name="species" value="<?php echo $birds[$index];?>"><?php echo $birds[$index].$values[$index];?></button>
+            <button type="submit" name="species" value="<?php echo $birds[$index];?>"><?php echo $values[$index];?></button>
         </td>
         <?php
       } else {

@@ -419,20 +419,8 @@ if(!isset($_GET['species']) && !isset($_GET['filename'])){
     $values = array();
     while($results=$result->fetchArray(SQLITE3_ASSOC))
     {
-      $name = $results['Com_Name'];
-      $birds[] = $name;
-      if ($_GET['sort'] == "confidence") {
-            $values[] = ' (' . round($results['MaxConfidence'] * 100) . '%)';
-      } elseif ($_GET['sort'] == "occurrences") {
-	    $valuescount = $results['Count'];
-            if ($valuescount >= 1000) {
-                $values[] = ' (' . round($valuescount / 1000, 1) . 'k)';
-            } else {
-                $values[] = ' (' . $valuescount . ')';
-            }
-      } elseif ($_GET['sort'] == "date") {
-            $values[] = ' (' . $results['Date'] . ')';
-      }
+      $birds[] = $results['Sci_Name'];
+      $values[] = get_label($results, $_GET['sort']);
     }
 
     if(count($birds) > 45) {
@@ -451,7 +439,7 @@ if(!isset($_GET['species']) && !isset($_GET['filename'])){
         if ($index < count($birds)) {
           ?>
           <td class="spec">
-              <button type="submit" name="species" value="<?php echo $birds[$index];?>"><?php echo $birds[$index].$values[$index];?></button>
+              <button type="submit" name="species" value="<?php echo $birds[$index];?>"><?php echo $values[$index];?></button>
           </td>
           <?php
         } else {
@@ -466,20 +454,10 @@ if(!isset($_GET['species']) && !isset($_GET['filename'])){
     $values = array();
 while($results=$result->fetchArray(SQLITE3_ASSOC))
 {
-  $name = $results['Com_Name'];
-  $dir_name = str_replace("'", '', $name);
+  $dir_name = str_replace("'", '', $results['Com_Name']);
   if(realpath($home."/BirdSongs/Extracted/By_Date/".$date."/".str_replace(" ", "_", $dir_name)) !== false){
-    $birds[] = $name;
-    if ($_GET['sort'] == "confidence") {
-        $values[] = ' (' . round($results['MaxConfidence'] * 100) . '%)';
-    } elseif ($_GET['sort'] == "occurrences") {
-	$valuescount = $results['Count'];
-        if ($valuescount >= 1000) {
-            $values[] = ' (' . round($valuescount / 1000, 1) . 'k)';
-        } else {
-            $values[] = ' (' . $valuescount . ')';
-        }
-    }
+    $birds[] = $results['Sci_Name'];
+    $values[] = get_label($results, $_GET['sort'], $_GET['date']);
   }
 }
 
@@ -499,7 +477,7 @@ for ($row = 0; $row < $num_rows; $row++) {
     if ($index < count($birds)) {
       ?>
       <td class="spec">
-          <button type="submit" name="species" value="<?php echo $birds[$index];?>"><?php echo $birds[$index].$values[$index];?></button>
+          <button type="submit" name="species" value="<?php echo $birds[$index];?>"><?php echo $values[$index];?></button>
       </td>
       <?php
     } else {
