@@ -117,6 +117,27 @@ function get_sci_name($com_name) {
   return $sciname;
 }
 
+function get_label($record, $sort_by, $date=null) {
+  $name = $record["Com_Name"];
+  if ($sort_by == "confidence") {
+    $ret = $name . ' (' . round($record['MaxConfidence'] * 100) . '%)';
+  } elseif ($sort_by == "occurrences") {
+    $valuescount = $record['Count'];
+    if ($valuescount >= 1000) {
+      $ret = $name . ' (' . round($valuescount / 1000, 1) . 'k)';
+    } else {
+      $ret = $name . ' (' . $valuescount . ')';
+    }
+  } elseif (($sort_by == "date") && !isset($date)) {
+    $ret = $name . ' (' . $record['Date'] . ')';
+  } elseif (($sort_by == "date") && isset($date)) {
+    $ret = $name . ' (' . $record['Time'] . ')';
+  } else {
+    $ret = $name;
+  }
+  return $ret;
+}
+
 function fetch_species_array($sort_by, $date=null) {
   if (!isset($_db)) {
     $_db = new SQLite3('./scripts/birds.db', SQLITE3_OPEN_READONLY);
