@@ -149,12 +149,7 @@ if(isset($_GET['bydate'])){
   $species = htmlspecialchars_decode($_GET['species'], ENT_QUOTES);
   session_start();
   $_SESSION['species'] = $species;
-  $statement = $db->prepare("SELECT * FROM detections WHERE Com_Name == \"$species\" ORDER BY Com_Name");
-  ensure_db_ok($statement);
-  $statement3 = $db->prepare("SELECT Date, Time, Sci_Name, MAX(Confidence), File_Name FROM detections WHERE Com_Name == \"$species\" ORDER BY Com_Name");
-  ensure_db_ok($statement3);
-  $result = $statement->execute();
-  $result3 = $statement3->execute();
+  $result2 = fetch_all_detections($species, $_GET['sort'], $_SESSION['date']);
   $view = "species";
 } else {
   unset($_SESSION['species']);
@@ -558,32 +553,15 @@ if ($fp) {
 
 $name = htmlspecialchars_decode($_GET['species'], ENT_QUOTES);
 $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 40;
-if(isset($_SESSION['date'])) {
-  $date = $_SESSION['date'];
-  if(isset($_GET['sort']) && $_GET['sort'] == "confidence") {
-    $statement2 = $db->prepare("SELECT * FROM detections where Com_Name == \"$name\" AND Date == \"$date\" ORDER BY Confidence DESC");
-  } else {
-    $statement2 = $db->prepare("SELECT * FROM detections where Com_Name == \"$name\" AND Date == \"$date\" ORDER BY Time DESC");
-  }
-} else {
-  if(isset($_GET['sort']) && $_GET['sort'] == "confidence") {
-    $statement2 = $db->prepare("SELECT * FROM detections where Com_Name == \"$name\" ORDER BY Confidence DESC");
-  } else {
-    $statement2 = $db->prepare("SELECT * FROM detections where Com_Name == \"$name\" ORDER BY Date DESC, Time DESC");
-  }
-}
-ensure_db_ok($statement2);
-$result2 = $statement2->execute();
-$num_rows = 0;
-while ($result2->fetchArray(SQLITE3_ASSOC)) {
-    $num_rows++;
-}
+
+$results=$result2->fetchArray(SQLITE3_ASSOC);
+$com_name = $results['Com_Name'];
 $result2->reset(); // reset the pointer to the beginning of the result set
-$sciname = get_sci_name($name);
+$sciname = $name;
 $info_url = get_info_url($sciname);
 $url = $info_url['URL'];
 echo "<table>
-  <tr><th>$name<br><span style=\"font-weight:normal;\">
+  <tr><th>$com_name<br><span style=\"font-weight:normal;\">
   <i>$sciname</i></span><br>
     <a href=\"$url\" target=\"_blank\"><img title=\"$url_title\" src=\"images/info.png\" width=\"20\"></a>
     <a href=\"https://wikipedia.org/wiki/$sciname\" target=\"_blank\"><img title=\"Wikipedia\" src=\"images/wiki.png\" width=\"20\"></a>
