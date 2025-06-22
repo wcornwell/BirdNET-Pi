@@ -24,6 +24,7 @@ log = logging.getLogger(__name__)
 userDir = os.path.expanduser('~')
 INTERPRETER, M_INTERPRETER, INCLUDE_LIST, EXCLUDE_LIST = (None, None, None, None)
 PREDICTED_SPECIES_LIST = []
+WEEK = None
 model, priv_thresh, sf_thresh = (None, None, None)
 
 mdata, mdata_params = (None, None)
@@ -239,7 +240,7 @@ def predict(sample, sensitivity):
 
 
 def analyzeAudioData(chunks, lat, lon, week, sens, overlap,):
-    global INTERPRETER
+    global INTERPRETER, WEEK
 
     sensitivity = max(0.5, min(1.0 - (sens - 1.0), 1.5))
 
@@ -248,7 +249,8 @@ def analyzeAudioData(chunks, lat, lon, week, sens, overlap,):
     log.info('ANALYZING AUDIO...')
 
     if model == "BirdNET_GLOBAL_6K_V2.4_Model_FP16":
-        if len(PREDICTED_SPECIES_LIST) == 0 or len(INCLUDE_LIST) != 0:
+        if week != WEEK or len(INCLUDE_LIST) != 0:
+            WEEK = week
             predictSpeciesList(lat, lon, week)
 
     mdata = get_metadata(lat, lon, week)
