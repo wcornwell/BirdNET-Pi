@@ -9,4 +9,4 @@ fi
 
 label_file_name="labels_${DATABASE_LANG}.txt"
 
-ln -sf ${BASEDIR}/${label_file_name} $HOME/BirdNET-Pi/model/labels.txt
+[ -f "${label_file_name}" ] && ln -sf ${BASEDIR}/${label_file_name} $HOME/BirdNET-Pi/model/labels.txt
