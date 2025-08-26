@@ -18,7 +18,6 @@ if (preg_match('#^/api/v1/image/(\S+)$#', $requestUri, $matches)) {
     $image_provider = new Wikipedia();
   }
   $sci_name = urldecode($matches[1]);
-  debug_log($sci_name);
   $result = $image_provider->get_image($sci_name);
 
   if ($result == false) {
