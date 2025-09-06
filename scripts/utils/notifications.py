@@ -9,6 +9,7 @@ import time as timeim
 
 userDir = os.path.expanduser('~')
 APPRISE_CONFIG = userDir + '/BirdNET-Pi/apprise.txt'
+APPRISE_BODY = userDir + '/BirdNET-Pi/body.txt'
 DB_PATH = userDir + '/BirdNET-Pi/scripts/birds.db'
 
 images = {}
@@ -68,7 +69,9 @@ def sendAppriseNotifications(species, confidence, confidencepct, path,
     if os.path.exists(APPRISE_CONFIG) and os.path.getsize(APPRISE_CONFIG) > 0:
 
         title = html.unescape(settings_dict.get('APPRISE_NOTIFICATION_TITLE'))
-        body = html.unescape(settings_dict.get('APPRISE_NOTIFICATION_BODY'))
+        f = open(APPRISE_BODY, 'r')
+        body = f.read()
+
         sciName, comName = species.split("_")
 
         APPRISE_ONLY_NOTIFY_SPECIES_NAMES = settings_dict.get('APPRISE_ONLY_NOTIFY_SPECIES_NAMES')
@@ -110,10 +113,8 @@ def sendAppriseNotifications(species, confidence, confidencepct, path,
                     resp = requests.get(url=url, timeout=10).json()
                     images[comName] = resp['data']['image_url']
                 except Exception as e:
-                    print("FLICKR API ERROR: "+str(e))
-                    image_url = ""
-            else:
-                image_url = images[comName]
+                    print("IMAGE API ERROR: "+str(e))
+            image_url = images.get(comName, "")
 
         if settings_dict.get('APPRISE_NOTIFY_EACH_DETECTION') == "1":
             notify_body = render_template(body, "detection")

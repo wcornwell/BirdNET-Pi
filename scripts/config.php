@@ -17,6 +17,12 @@ if (file_exists($home."/BirdNET-Pi/apprise.txt")) {
   $apprise_config = "";
 }
 
+if (file_exists($home."/BirdNET-Pi/message.txt")) {
+  $apprise_notification_body = file_get_contents($home."/BirdNET-Pi/message.txt");
+} else {
+  $apprise_notification_body = "";
+}
+
 function syslog_shell_exec($cmd, $sudo_user = null) {
   if ($sudo_user) {
     $cmd = "sudo -u $sudo_user $cmd";
@@ -138,7 +144,6 @@ if(isset($_GET["latitude"])){
   $contents = preg_replace("/LONGITUDE=.*/", "LONGITUDE=$longitude", $contents);
   $contents = preg_replace("/BIRDWEATHER_ID=.*/", "BIRDWEATHER_ID=$birdweather_id", $contents);
   $contents = preg_replace("/APPRISE_NOTIFICATION_TITLE=.*/", "APPRISE_NOTIFICATION_TITLE=\"$apprise_notification_title\"", $contents);
-  $contents = preg_replace("/APPRISE_NOTIFICATION_BODY=.*/", "APPRISE_NOTIFICATION_BODY=\"$apprise_notification_body\"", $contents);
   $contents = preg_replace("/APPRISE_NOTIFY_EACH_DETECTION=.*/", "APPRISE_NOTIFY_EACH_DETECTION=$apprise_notify_each_detection", $contents);
   $contents = preg_replace("/APPRISE_NOTIFY_NEW_SPECIES=.*/", "APPRISE_NOTIFY_NEW_SPECIES=$apprise_notify_new_species", $contents);
   $contents = preg_replace("/APPRISE_NOTIFY_NEW_SPECIES_EACH_DAY=.*/", "APPRISE_NOTIFY_NEW_SPECIES_EACH_DAY=$apprise_notify_new_species_each_day", $contents);
@@ -176,6 +181,10 @@ if(isset($_GET["latitude"])){
     $appriseconfig = fopen($home."/BirdNET-Pi/apprise.txt", "w");
     fwrite($appriseconfig, $apprise_input);
     $apprise_config = $apprise_input;
+  }
+  if(isset($apprise_notification_body)){
+    $apprisebody = fopen($home."/BirdNET-Pi/message.txt", "w");
+    fwrite($apprisebody, $apprise_notification_body);
   }
   if ($model != $config['MODEL'] || $language != $config['DATABASE_LANG']){
     if(strlen($language) == 2){
@@ -537,7 +546,7 @@ https://discordapp.com/api/webhooks/{WebhookID}/{WebhookToken}
       <label for="apprise_notification_title">Notification Title: </label>
       <input name="apprise_notification_title" style="width: 100%" type="text" value="<?php print($config['APPRISE_NOTIFICATION_TITLE']);?>" /><br>
       <label for="apprise_notification_body">Notification Body: </label>
-      <input name="apprise_notification_body" style="width: 100%" type="text" value='<?php print($config['APPRISE_NOTIFICATION_BODY']);?>' /><br>
+      <textarea name="apprise_notification_body" style="width: 100%" rows="5" type="text" ><?php print($apprise_notification_body);?></textarea>
       <input type="checkbox" name="apprise_notify_new_species" <?php if($config['APPRISE_NOTIFY_NEW_SPECIES'] == 1 && filesize($home."/BirdNET-Pi/apprise.txt") != 0) { echo "checked"; };?> >
       <label for="apprise_notify_new_species">Notify each new infrequent species detection (<5 visits per week)</label><br>
       <input type="checkbox" name="apprise_notify_new_species_each_day" <?php if($config['APPRISE_NOTIFY_NEW_SPECIES_EACH_DAY'] == 1 && filesize($home."/BirdNET-Pi/apprise.txt") != 0) { echo "checked"; };?> >
