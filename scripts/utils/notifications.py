@@ -12,23 +12,25 @@ APPRISE_CONFIG = userDir + '/BirdNET-Pi/apprise.txt'
 APPRISE_BODY = userDir + '/BirdNET-Pi/body.txt'
 DB_PATH = userDir + '/BirdNET-Pi/scripts/birds.db'
 
+apobj = None
 images = {}
 species_last_notified = {}
 
 
-asset = apprise.AppriseAsset(
-    plugin_paths=[
-        userDir + "/.apprise/plugins",
-        userDir + "/.config/apprise/plugins",
-    ]
-)
-apobj = apprise.Apprise(asset=asset)
-config = apprise.AppriseConfig()
-config.add(APPRISE_CONFIG)
-apobj.add(config)
-
-
 def notify(body, title, attached=""):
+    global apobj
+    if apobj is None:
+        asset = apprise.AppriseAsset(
+            plugin_paths=[
+                userDir + "/.apprise/plugins",
+                userDir + "/.config/apprise/plugins",
+            ]
+        )
+        apobj = apprise.Apprise(asset=asset)
+        config = apprise.AppriseConfig()
+        config.add(APPRISE_CONFIG)
+        apobj.add(config)
+
     if attached != "":
         apobj.notify(
             body=body,
@@ -48,20 +50,20 @@ def sendAppriseNotifications(species, confidence, confidencepct, path,
     def render_template(template, reason=""):
         ret = template.replace("$sciname", sciName) \
             .replace("$comname", comName) \
-            .replace("$confidencepct", confidencepct) \
-            .replace("$confidence", confidence) \
+            .replace("$confidencepct", str(confidencepct)) \
+            .replace("$confidence", str(confidence)) \
             .replace("$listenurl", listenurl) \
             .replace("$friendlyurl", friendlyurl) \
-            .replace("$date", date) \
-            .replace("$time", time) \
-            .replace("$week", week) \
-            .replace("$latitude", latitude) \
-            .replace("$longitude", longitude) \
-            .replace("$cutoff", cutoff) \
-            .replace("$sens", sens) \
+            .replace("$date", str(date)) \
+            .replace("$time", str(time)) \
+            .replace("$week", str(week)) \
+            .replace("$latitude", str(latitude)) \
+            .replace("$longitude", str(longitude)) \
+            .replace("$cutoff", str(cutoff)) \
+            .replace("$sens", str(sens)) \
             .replace("$flickrimage", image_url if "{" in body else "") \
             .replace("$image", image_url if "{" in body else "") \
-            .replace("$overlap", overlap) \
+            .replace("$overlap", str(overlap)) \
             .replace("$reason", reason)
         return ret
     # print(sendAppriseNotifications)
