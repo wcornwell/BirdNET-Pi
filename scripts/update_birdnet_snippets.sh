@@ -92,6 +92,12 @@ SRC='^APPRISE_NOTIFICATION_BODY="A \$comname \(\$sciname\)  was just detected wi
 DST='APPRISE_NOTIFICATION_BODY="A \$comname (\$sciname)  was just detected with a confidence of \$confidence (\$reason)"'
 sed -i --follow-symlinks -E "s/$SRC/$DST/" /etc/birdnet/birdnet.conf
 
+if ! [ -f $HOME/BirdNET-Pi/body.txt ];then
+  grep -E '^APPRISE_NOTIFICATION_BODY=".*"' birdnet.conf | cut -d '"' -f 2 | sudo_with_user tee "$HOME/BirdNET-Pi/body.txt"
+  chmod g+w "$HOME/BirdNET-Pi/body.txt"
+  sed -i --follow-symlinks -E 's/^APPRISE_NOTIFICATION_BODY=/#APPRISE_NOTIFICATION_BODY=/' /etc/birdnet/birdnet.conf
+fi
+
 if ! grep -E '^INFO_SITE=' /etc/birdnet/birdnet.conf &>/dev/null;then
   echo "INFO_SITE=\"ALLABOUTBIRDS\"" >> /etc/birdnet/birdnet.conf
 fi
