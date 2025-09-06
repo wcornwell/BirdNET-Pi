@@ -47,6 +47,18 @@ function initCustomAudioPlayers() {
     } catch {}
   };
 
+  // Helper for readable/friendly display of numbers
+  const compactFormatter = new Intl.NumberFormat(undefined, { notation: 'compact' });
+
+  const formatCompactOrEcho = (value) => {
+    const n = (typeof value === 'number') ? value : Number(value);
+    if (!Number.isFinite(n)) {
+      return String(value);
+    }
+    const out = compactFormatter.format(n);
+    return out;
+  };
+
   // Retrieve saved user preferences
   const savedGain = safeGet("customAudioPlayerGain", "Off");
   const savedHighpass = safeGet("customAudioPlayerFilterHigh", "Off");
@@ -586,12 +598,12 @@ Channels: ${channels}`
       })
     );
 
-    const highpassOptions = ["Off", "250", "500", "1000"];
+    const highpassOptions = ["Off", "250", "500", "1000", "1500"];
     let activeHighpassOption = highpassOptions.includes(savedHighpass) ? savedHighpass : "Off";
     const highpassContainer = createOptionSection("HighPass (Hz):");
     const highpassButtons = highpassOptions.map((opt) =>
       createButton(highpassContainer, {
-        text: opt,
+        text: formatCompactOrEcho(opt),
         data: { filter: opt },
         styles: optionBtnStyle,
         onClick: () => setActiveHighpass(opt),
@@ -603,7 +615,7 @@ Channels: ${channels}`
     const lowpassContainer = createOptionSection("LowPass (Hz):");
     const lowpassButtons = lowpassOptions.map((opt) =>
       createButton(lowpassContainer, {
-        text: opt,
+        text: formatCompactOrEcho(opt),
         data: { filter: opt },
         styles: optionBtnStyle,
         onClick: () => setActiveLowpass(opt),
