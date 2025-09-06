@@ -17,8 +17,8 @@ if (file_exists($home."/BirdNET-Pi/apprise.txt")) {
   $apprise_config = "";
 }
 
-if (file_exists($home."/BirdNET-Pi/message.txt")) {
-  $apprise_notification_body = file_get_contents($home."/BirdNET-Pi/message.txt");
+if (file_exists($home."/BirdNET-Pi/body.txt")) {
+  $apprise_notification_body = file_get_contents($home."/BirdNET-Pi/body.txt");
 } else {
   $apprise_notification_body = "";
 }
@@ -183,7 +183,7 @@ if(isset($_GET["latitude"])){
     $apprise_config = $apprise_input;
   }
   if(isset($apprise_notification_body)){
-    $apprisebody = fopen($home."/BirdNET-Pi/message.txt", "w");
+    $apprisebody = fopen($home."/BirdNET-Pi/body.txt", "w");
     fwrite($apprisebody, $apprise_notification_body);
   }
   if ($model != $config['MODEL'] || $language != $config['DATABASE_LANG']){
@@ -199,93 +199,38 @@ if(isset($_GET["latitude"])){
 if(isset($_GET['sendtest']) && $_GET['sendtest'] == "true") {
   $db = new SQLite3($home."/BirdNET-Pi/scripts/birds.db", SQLITE3_OPEN_READONLY);
   $db->busyTimeout(1000);
-
-  $cf = explode("\n",$_GET['apprise_config']);
-  $cf = "'".implode("' '", $cf)."'";
-
-  $statement0 = $db->prepare('SELECT * FROM detections WHERE Date == DATE(\'now\', \'localtime\') ORDER BY TIME DESC LIMIT 1');
+  $statement0 = $db->prepare('SELECT * FROM detections ORDER BY Date DESC, Time DESC LIMIT 1');
   $result0 = $statement0->execute();
   while($todaytable=$result0->fetchArray(SQLITE3_ASSOC))
   {
-    $sciname = $todaytable['Sci_Name'];
-    $comname = $todaytable['Com_Name'];
-    $confidence = $todaytable['Confidence'];
-    $filename = $todaytable['File_Name'];
-    $date = $todaytable['Date'];
-    $time = $todaytable['Time'];
-    $week = $todaytable['Week'];
-    $latitude = $todaytable['Lat'];
-    $longitude = $todaytable['Lon'];
-    $cutoff = $todaytable['Cutoff'];
-    $sens = $todaytable['Sens'];
-    $overlap = $todaytable['Overlap'];
+    $detection = json_encode($todaytable);
   }
 
+  $conf = $_GET['apprise_config'];
   $title = $_GET['apprise_notification_title'];
   $body = $_GET['apprise_notification_body'];
 
-  if($config["BIRDNETPI_URL"] != "") {
-    $filename = $config["BIRDNETPI_URL"]."?filename=".$filename;
-  } else{
-    $filename = "http://".$_SERVER['SERVER_NAME']."/"."?filename=".$filename;
-  }
+  $temp_det = tmpfile();
+  $t_det_path = stream_get_meta_data($temp_det)['uri'];
+  chmod($t_det_path, 0644);
+  fwrite($temp_det, $detection);
 
-  $friendlyfilename = "[Listen here](".$filename.")";
+  $temp_conf = tmpfile();
+  $t_conf_path = stream_get_meta_data($temp_conf)['uri'];
+  chmod($t_conf_path, 0644);
+  fwrite($temp_conf, $conf);
 
-  $attach="";
-  if ($config["IMAGE_PROVIDER"] === 'FLICKR') {
-    $image_provider = new Flickr();
-  } else {
-    $image_provider = new Wikipedia();
-  }
-  $exampleimage = htmlspecialchars_decode($image_provider->get_image($sciname)['image_url'], ENT_QUOTES);
+  $temp_body = tmpfile();
+  $t_body_path = stream_get_meta_data($temp_body)['uri'];
+  chmod($t_body_path, 0644);
+  fwrite($temp_body, $body);
 
-  if (strpos($body, '$image') !== false) {
-      $attach = "--attach '$exampleimage'";
-  }
-  if (strpos($body, '{') === false) {
-      $exampleimage = "";
-  }
-
-  $title = str_replace("\$sciname", $sciname, $title);
-  $title = str_replace("\$comname", $comname, $title);
-  $title = str_replace("\$confidencepct", round($confidence*100), $title);
-  $title = str_replace("\$confidence", $confidence, $title);
-  $title = str_replace("\$listenurl", $filename, $title);
-  $title = str_replace("\$friendlyurl", $friendlyfilename, $title);
-  $title = str_replace("\$date", $date, $title);
-  $title = str_replace("\$time", $time, $title);
-  $title = str_replace("\$week", $week, $title);
-  $title = str_replace("\$latitude", $latitude, $title);
-  $title = str_replace("\$longitude", $longitude, $title);
-  $title = str_replace("\$cutoff", $cutoff, $title);
-  $title = str_replace("\$sens", $sens, $title);
-  $title = str_replace("\$overlap", $overlap, $title);
-  $title = str_replace("\$image", $exampleimage, $title);
-  $title = str_replace("\$reason", 'Test message', $title);
-
-  $body = str_replace("\$sciname", $sciname, $body);
-  $body = str_replace("\$comname", $comname, $body);
-  $body = str_replace("\$confidencepct", round($confidence*100), $body);
-  $body = str_replace("\$confidence", $confidence, $body);
-  $body = str_replace("\$listenurl", $filename, $body);
-  $body = str_replace("\$friendlyurl", $friendlyfilename, $body);
-  $body = str_replace("\$date", $date, $body);
-  $body = str_replace("\$time", $time, $body);
-  $body = str_replace("\$week", $week, $body);
-  $body = str_replace("\$latitude", $latitude, $body);
-  $body = str_replace("\$longitude", $longitude, $body);
-  $body = str_replace("\$cutoff", $cutoff, $body);
-  $body = str_replace("\$sens", $sens, $body);
-  $body = str_replace("\$overlap", $overlap, $body);
-  $body = str_replace("\$image", $exampleimage, $body);
-  $body = str_replace("\$reason", 'Test message', $body);
-
-  $temp = tmpfile();
-  $tpath = stream_get_meta_data($temp)['uri'];
-  fwrite($temp, $body);
-  echo "<pre class=\"bash\">".shell_exec($home."/BirdNET-Pi/birdnet/bin/apprise -vv --plugin-path ".$home."/.apprise/plugins "." -t '".escapeshellcmd($title)."' ".$attach." ".$cf." <".$tpath)."</pre>";
-  fclose($temp);
+  $cmd = "sudo -u $user $home/BirdNET-Pi/birdnet/bin/python3 $home/BirdNET-Pi/scripts/send_test_notification.py --body $t_body_path --config $t_conf_path --title '" . escapeshellcmd($title) . "' --detection $t_det_path 2>&1";
+  $ret = shell_exec($cmd);
+  echo "<pre class=\"bash\">".$ret."</pre>";
+  fclose($temp_det);
+  fclose($temp_conf);
+  fclose($temp_body);
 
   die();
 }
