@@ -408,8 +408,8 @@ class Wikipedia extends ImageProvider {
   protected $db_path = __ROOT__ . '/scripts/wikipedia.db';
 
   protected function get_from_source($sci_name) {
-    $title = str_replace(' ', '_', $sci_name);
-    $data = $this->get_json("https://en.wikipedia.org/api/rest_v1/page/summary/$title");
+    $page_title = str_replace(' ', '_', $sci_name);
+    $data = $this->get_json("https://en.wikipedia.org/api/rest_v1/page/summary/$page_title");
     if ($data == false or !isset($data['originalimage']))
       return;
 
@@ -417,6 +417,9 @@ class Wikipedia extends ImageProvider {
     $metadata = $this->get_json("https://commons.wikimedia.org/w/api.php?action=query&titles=Image:$image_name&prop=imageinfo&iiprop=extmetadata&format=json");
     if ($metadata == false or !isset($metadata['query']['pages']))
       return;
+
+    $image_url = $data['originalimage']['source'];
+    $title = $data['title'];
 
     foreach ($metadata['query']['pages'] as $page) {
       $details = $page['imageinfo']['0']['extmetadata'];
@@ -427,13 +430,14 @@ class Wikipedia extends ImageProvider {
       } else {
         $author_url = "https://en.wikipedia.org/wiki/File:$image_name";
       }
-
-      $license_url = $details['LicenseUrl']['value'];
+      if (isset($details['LicenseUrl'])) {
+        $license_url = $details['LicenseUrl']['value'];
+      } else {
+        $license_url = $this->get_external_link($image_url);
+      }
     }
 
     $engname = get_com_en_name($sci_name);
-    $image_url = $data['originalimage']['source'];
-    $title = $data['title'];
 
     //                     $sci_name, $com_en_name, $image_url, $title, $id, $author_url, $license_url
     $this->set_image_in_db($sci_name, $engname, $image_url, $title, $sci_name, $author_url, $license_url);
@@ -443,11 +447,15 @@ class Wikipedia extends ImageProvider {
     $image = parent::get_image($sci_name);
     if ($image === false)
       return false;
-    $image_name = substr($image['image_url'], strrpos($image['image_url'], '/') + 1);
-    // external link to photo
-    $photos_url = "https://en.wikipedia.org/wiki/File:$image_name";
-    $image['photos_url'] = $photos_url;
+
+    $image['photos_url'] = $this->get_external_link($image['image_url']);
     return $image;
+  }
+
+  private function get_external_link($image_url) {
+    $image_name = substr($image_url, strrpos($image_url, '/') + 1);
+    $photo_url = "https://en.wikipedia.org/wiki/File:$image_name";
+    return $photo_url;
   }
 }
 
