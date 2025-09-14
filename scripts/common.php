@@ -414,7 +414,7 @@ class Wikipedia extends ImageProvider {
       return;
 
     $image_name = substr($data['originalimage']['source'], strrpos($data['originalimage']['source'], '/') + 1);
-    $metadata = $this->get_json("https://commons.wikimedia.org/w/api.php?action=query&titles=Image:$image_name&prop=imageinfo&iiprop=extmetadata&format=json");
+    $metadata = $this->get_json("https://commons.wikimedia.org/w/api.php?action=query&titles=File:$image_name&prop=imageinfo&iiprop=extmetadata|size&format=json");
     if ($metadata == false or !isset($metadata['query']['pages']))
       return;
 
@@ -428,12 +428,15 @@ class Wikipedia extends ImageProvider {
       if (preg_match('/href="(http\S*)"/', $author, $matches)) {
         $author_url = $matches[1];
       } else {
-        $author_url = "https://en.wikipedia.org/wiki/File:$image_name";
+        $author_url = $this->get_external_link($image_url);
       }
       if (isset($details['LicenseUrl'])) {
         $license_url = $details['LicenseUrl']['value'];
       } else {
         $license_url = $this->get_external_link($image_url);
+      }
+      if ($page["imageinfo"][0]["width"] > 1024) {
+        $image_url = preg_replace('#/commons/#', '/commons/thumb/', $image_url) . '/1024px-'. $image_name;
       }
     }
 
@@ -453,7 +456,12 @@ class Wikipedia extends ImageProvider {
   }
 
   private function get_external_link($image_url) {
-    $image_name = substr($image_url, strrpos($image_url, '/') + 1);
+    if (strpos($image_url, '/commons/thumb/') !== false) {
+      $parts = explode('/', $image_url);
+      $image_name = $parts[count($parts) - 2];
+    } else {
+      $image_name = substr($image_url, strrpos($image_url, '/') + 1);
+    }
     $photo_url = "https://en.wikipedia.org/wiki/File:$image_name";
     return $photo_url;
   }
