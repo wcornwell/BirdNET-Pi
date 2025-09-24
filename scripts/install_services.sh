@@ -383,6 +383,10 @@ install_weekly_cron() {
   sed "s/\$USER/$USER/g" $my_dir/templates/weekly_report.cron >> /etc/crontab
 }
 
+install_automatic_update_cron() {
+  sed "s/\$USER/$USER/g" $my_dir/templates/automatic_update.cron >> /etc/crontab
+}
+
 chown_things() {
   chown -R $USER:$USER $HOME/Bird*
 }
@@ -418,6 +422,7 @@ install_services() {
   install_birdnet_mount
   install_cleanup_cron
   install_weekly_cron
+  install_automatic_update_cron
   increase_caddy_timeout
 
   create_necessary_dirs
