@@ -16,6 +16,7 @@ from suntime import Sun
 from utils.helpers import get_settings
 
 profile = False
+debug = False
 if profile:
     try:
         from pyinstrument import Profiler
@@ -53,6 +54,11 @@ st.markdown("""
         """, unsafe_allow_html=True)
 
 
+def print_now(message):
+    if profile or debug:
+        print(message, flush=True)
+
+
 @st.cache_resource()
 def get_connection(path: str):
     uri = f"file:{path}?mode=ro"
@@ -60,6 +66,7 @@ def get_connection(path: str):
 
 
 def get_data(_conn: Connection):
+    print_now('** get_data **')
     df1 = pd.read_sql("SELECT * FROM detections", con=conn)
     return df1
 
@@ -96,6 +103,7 @@ else:
 
 @st.cache_data()
 def date_filter(df, start_date, end_date):
+    print_now('** date_filter **')
     filt = (df2.index >= pd.Timestamp(start_date)) & (df2.index <= pd.Timestamp(end_date + timedelta(days=1)))
     df = df[filt]
     return (df)
@@ -139,6 +147,7 @@ else:
 
 @st.cache_data()
 def time_resample(df, resample_time):
+    print_now('** time_resample **')
     if resample_time == 'Raw':
         df_resample = df['Com_Name']
 
@@ -474,4 +483,4 @@ else:
 if profile:
     profiler.stop()
     profiler.print()
-    print('**profiler done**', flush=True)
+    print_now('**profiler done**')
