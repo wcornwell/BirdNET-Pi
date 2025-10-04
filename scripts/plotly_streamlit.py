@@ -67,14 +67,22 @@ def get_connection(path: str):
 
 def get_data(_conn: Connection):
     print_now('** get_data **')
-    df1 = pd.read_sql("SELECT * FROM detections", con=conn)
+    df1 = pd.read_sql("SELECT Date, Time, Sci_Name, Com_Name, Confidence, File_Name FROM detections", con=_conn)
     return df1
+
+
+@st.cache_data(max_entries=1)
+def normalise_com_name(df):
+    print_now('** normalise_com_name **')
+    latest_com_names = df.groupby('Sci_Name').tail(1)
+    df.rename(columns={'Com_Name': 'Directory'}, inplace=True)
+    df['DateTime'] = pd.to_datetime(df['Date'] + " " + df['Time'])
+    return df.merge(latest_com_names[['Sci_Name', 'Com_Name']].set_index('Sci_Name'), how='left', on='Sci_Name').set_index('DateTime')
 
 
 conn = get_connection(URI_SQLITE_DB)
 df2 = get_data(conn)
-df2['DateTime'] = pd.to_datetime(df2['Date'] + " " + df2['Time'])
-df2 = df2.set_index('DateTime')
+df2 = normalise_com_name(df2)
 
 if len(df2) == 0:
     st.info('No data yet. Please come back later.')
@@ -127,7 +135,7 @@ if start_date == end_date:
     resample_times = {'Raw': 'Raw',
                       '1 minute': '1min',
                       '15 minutes': '15min',
-                      'Hourly': '1H'
+                      'Hourly': '1h'
                       }
     resample_time = resample_times[resample_sel]
 
@@ -139,7 +147,7 @@ else:
     resample_times = {'Raw': 'Raw',
                       '1 minute': '1min',
                       '15 minutes': '15min',
-                      'Hourly': '1H',
+                      'Hourly': '1h',
                       'DAILY': '1D'
                       }
     resample_time = resample_times[resample_sel]
@@ -373,14 +381,14 @@ if daily is False:
 
             with col2:
                 try:
-                    recording = st.selectbox('Available recordings', recordings.sort_index(ascending=False))
-                    date_specie = df2.loc[df2['File_Name'] == recording, ['Date', 'Com_Name']]
+                    recording = st.selectbox('Recordings', recordings.sort_index(ascending=False))
+                    date_specie = df2.loc[df2['File_Name'] == recording, ['Date', 'Com_Name', 'Directory']]
                     date_dir = date_specie['Date'].values[0]
-                    specie_dir = date_specie['Com_Name'].values[0].replace(" ", "_").replace("'", "")
+                    specie_dir = date_specie['Directory'].values[0].replace(" ", "_").replace("'", "")
                     st.image(userDir + '/BirdSongs/Extracted/By_Date/' + date_dir + '/' + specie_dir + '/' + recording + '.png')
                     st.audio(userDir + '/BirdSongs/Extracted/By_Date/' + date_dir + '/' + specie_dir + '/' + recording)
                 except Exception:
-                    st.title('RECORDING NOT AVAILABLE :(')
+                    st.info('Recording not available')
 
     else:
 
