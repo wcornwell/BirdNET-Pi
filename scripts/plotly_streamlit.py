@@ -65,7 +65,13 @@ def get_connection(path: str):
     return sqlite3.connect(uri, uri=True, check_same_thread=False)
 
 
-def get_data(_conn: Connection):
+def get_todays_count(conn):
+    today = datetime.now().strftime("%Y-%m-%d")
+    return pd.read_sql(f"SELECT COUNT(*) FROM detections WHERE Date = DATE('{today}')", con=conn)
+
+
+@st.cache_data(ttl=300)
+def get_data(_conn: Connection, flush_cache):
     print_now('** get_data **')
     df1 = pd.read_sql("SELECT Date, Time, Sci_Name, Com_Name, Confidence, File_Name FROM detections", con=_conn)
     return df1
@@ -81,7 +87,8 @@ def normalise_com_name(df):
 
 
 conn = get_connection(URI_SQLITE_DB)
-df2 = get_data(conn)
+latest_count = get_todays_count(conn)
+df2 = get_data(conn, latest_count)
 df2 = normalise_com_name(df2)
 
 if len(df2) == 0:
