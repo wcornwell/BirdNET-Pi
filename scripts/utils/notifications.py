@@ -126,49 +126,50 @@ def sendAppriseNotifications(species, confidence, confidencepct, path,
 
         APPRISE_NOTIFICATION_NEW_SPECIES_DAILY_COUNT_LIMIT = 1  # Notifies the first N per day.
         if settings_dict.get('APPRISE_NOTIFY_NEW_SPECIES_EACH_DAY') == "1":
-            try:
-                con = sqlite3.connect(db_path)
-                cur = con.cursor()
-                today = datetime.now().strftime("%Y-%m-%d")
-                cur.execute(f"SELECT DISTINCT(Com_Name), COUNT(Com_Name) FROM detections WHERE Date = DATE('{today}') GROUP BY Com_Name")
-                known_species = cur.fetchall()
-                detections = [d[1] for d in known_species if d[0] == comName]
-                numberDetections = 0
-                if len(detections):
-                    numberDetections = detections[0]
-                if numberDetections > 0 and numberDetections <= APPRISE_NOTIFICATION_NEW_SPECIES_DAILY_COUNT_LIMIT:
-                    print("send the notification")
-                    notify_body = render_template(body, "first time today")
-                    notify_title = render_template(title, "first time today")
-                    notify(notify_body, notify_title, image_url)
-                    species_last_notified[comName] = int(timeim.time())
-                con.close()
-            except sqlite3.Error as e:
-                print(e)
-                print("Database busy")
-                timeim.sleep(2)
+            numberDetections = get_todays_count_for(db_path, sciName)
+            if 0 < numberDetections <= APPRISE_NOTIFICATION_NEW_SPECIES_DAILY_COUNT_LIMIT:
+                print("send the notification")
+                notify_body = render_template(body, "first time today")
+                notify_title = render_template(title, "first time today")
+                notify(notify_body, notify_title, image_url)
+                species_last_notified[comName] = int(timeim.time())
 
         if settings_dict.get('APPRISE_NOTIFY_NEW_SPECIES') == "1":
-            try:
-                con = sqlite3.connect(db_path)
-                cur = con.cursor()
-                today = datetime.now().strftime("%Y-%m-%d")
-                cur.execute(f"SELECT DISTINCT(Com_Name), COUNT(Com_Name) FROM detections WHERE Date >= DATE('{today}', '-7 day') GROUP BY Com_Name")
-                known_species = cur.fetchall()
-                detections = [d[1] for d in known_species if d[0] == comName]
-                numberDetections = 0
-                if len(detections):
-                    numberDetections = detections[0]
-                if numberDetections > 0 and numberDetections <= 5:
-                    reason = f"only seen {numberDetections} times in last 7d"
-                    notify_body = render_template(body, reason)
-                    notify_title = render_template(title, reason)
-                    notify(notify_body, notify_title, image_url)
-                    species_last_notified[comName] = int(timeim.time())
-                con.close()
-            except sqlite3.Error:
-                print("Database busy")
-                timeim.sleep(2)
+            numberDetections = get_this_weeks_count_for(db_path, sciName)
+            if 0 < numberDetections <= 5:
+                reason = f"only seen {numberDetections} times in last 7d"
+                notify_body = render_template(body, reason)
+                notify_title = render_template(title, reason)
+                notify(notify_body, notify_title, image_url)
+                species_last_notified[comName] = int(timeim.time())
+
+
+def get_todays_count_for(db_path, sci_name):
+    today = datetime.now().strftime("%Y-%m-%d")
+    select_sql = f"SELECT COUNT(*) FROM detections WHERE Date = DATE('{today}') AND Sci_name = '{sci_name}'"
+    records = get_records(db_path, select_sql)
+    return records[0][0] if records else 0
+
+
+def get_this_weeks_count_for(db_path, sci_name):
+    today = datetime.now().strftime("%Y-%m-%d")
+    select_sql = f"SELECT COUNT(*) FROM detections WHERE Date >= DATE('{today}', '-7 day') AND Sci_name = '{sci_name}'"
+    records = get_records(db_path, select_sql)
+    return records[0][0] if records else 0
+
+
+def get_records(db_path, select_sql):
+    try:
+        con = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
+        cur = con.cursor()
+        cur.execute(select_sql)
+        records = cur.fetchall()
+        con.close()
+    except sqlite3.Error:
+        print("Database busy")
+        timeim.sleep(2)
+        records = []
+    return records
 
 
 if __name__ == "__main__":
