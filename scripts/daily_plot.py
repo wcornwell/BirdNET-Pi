@@ -138,7 +138,7 @@ def create_plot(df_plt_today, now, is_top=None):
     plot.set(xlabel="Detections")
 
     # Generate crosstab matrix for heatmap plot
-    heat = pd.crosstab(df_plt_selection_today['Com_Name'], df_plt_selection_today['Hour of Day'])
+    heat = pd.crosstab(df_plt_selection_today['Sci_Name'], df_plt_selection_today['Hour of Day'])
 
     # Order heatmap Birds by frequency of occurrance
     heat.index = pd.CategoricalIndex(heat.index, categories=freq_order)
