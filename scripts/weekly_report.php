@@ -106,7 +106,7 @@ if(isset($_GET['ascii'])) {
               $percentagediff = "<span style='color:red;font-size:small'>-".abs($percentagediff)."%</span>";
       }
 
-      echo $com_name." - ".$scount." (".$percentagediff.")<br>";
+      echo $com_name." - ".$count." (".$percentagediff.")<br>";
 		}
 	}
 
