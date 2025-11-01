@@ -198,7 +198,13 @@ fi
 
 if grep -q -e '-P terminal' $HOME/BirdNET-Pi/templates/web_terminal.service ; then
   sed -i "s/-P terminal/--path terminal/" ~/BirdNET-Pi/templates/web_terminal.service
-  systemctl daemon-reload && restart_services.sh
+  systemctl daemon-reload && systemctl restart web_terminal.service
+fi
+
+if grep -q -e ' login' $HOME/BirdNET-Pi/templates/web_terminal.service ; then
+  sed -i "s/ login/ bash -c 'read -p \"Login: \" username \&\& [[ \"\$username\" =~ ^[-_.a-z0-9]{1,30}\$ ]] \&\& su --pty -l \$username'/" ~/BirdNET-Pi/templates/web_terminal.service
+  sed -i "/\[Service\]/a User=$BIRDNET_USER" ~/BirdNET-Pi/templates/web_terminal.service
+  systemctl daemon-reload && systemctl restart web_terminal.service
 fi
 
 if grep -q -e 'Environment=XDG_RUNTIME_DIR=/run/user/' $HOME/BirdNET-Pi/templates/birdnet_recording.service; then
