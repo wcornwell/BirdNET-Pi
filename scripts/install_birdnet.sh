@@ -44,7 +44,7 @@ install_birdnet() {
     [ $LOOP_COUNT == 0 ] && exit 1
     sleep 5
   done
-  [ -d $HOME/bird_tmp ] && rm -rf $HOME/bird_tmp
+  rm -rf $HOME/bird_tmp
 }
 
 [ -d ${RECS_DIR} ] || mkdir -p ${RECS_DIR} &> /dev/null
