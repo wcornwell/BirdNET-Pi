@@ -77,10 +77,10 @@ def sendAppriseNotifications(sci_name, com_name, confidence, confidencepct, path
     if websiteurl is None or len(websiteurl) == 0:
         websiteurl = f"http://{socket.gethostname()}.local"
 
-    listenurl = websiteurl+"?filename="+path
-    friendlyurl = "[Listen here]("+listenurl+")"
-    image_url = ""
+    listenurl = f"{websiteurl}?filename= {path}"
+    friendlyurl = f"[Listen here]({listenurl})"
 
+    image_url = ""
     if "$flickrimage" in body or "$image" in body:
         if com_name not in images:
             try:
@@ -88,7 +88,7 @@ def sendAppriseNotifications(sci_name, com_name, confidence, confidencepct, path
                 resp = requests.get(url=url, timeout=10).json()
                 images[com_name] = resp['data']['image_url']
             except Exception as e:
-                print("IMAGE API ERROR: " + str(e))
+                print("IMAGE API ERROR:", e)
         image_url = images.get(com_name, "")
 
     if settings_dict.get('APPRISE_NOTIFY_EACH_DETECTION') == "1":
