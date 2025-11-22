@@ -114,7 +114,7 @@ To restore:
 ## x86_64 support
 x86_64 support is mainly there for developers or otherwise more Linux savvy people.
 That being said, some pointers:
-- Use Debian 12
+- Use Debian 12 or 13
 - The user needs passwordless sudo
 
 For Proxmox, a user has reported adding this in their `cpu-models.conf`, in order for the custom TFLite build to work.
