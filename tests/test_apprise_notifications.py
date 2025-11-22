@@ -10,6 +10,7 @@ from scripts.utils.notifications import sendAppriseNotifications
 
 from tests.helpers import Settings
 
+
 class TestAppriseNotifications(unittest.TestCase):
 
     def setUp(self):

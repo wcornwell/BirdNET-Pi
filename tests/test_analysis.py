@@ -137,7 +137,7 @@ class TestFilterHumans(unittest.TestCase):
         detections = [
             [('Bird_A', 0.9), ('Bird_B', 0.8)],
             [('Bird_D', 0.9), ('Bird_E', 0.8)],
-            [('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.5), ('Bird_C', 0.7), ('Human_Human', 0.95)],
+            [('Bird_C', 0.7)] * 10 + [('Human_Human', 0.95)],
             [('Bird_F', 0.6), ('Bird_G', 0.5)]
         ]
 
@@ -145,7 +145,7 @@ class TestFilterHumans(unittest.TestCase):
         expected = [
             [('Bird_A', 0.9), ('Bird_B', 0.8)],
             [('Bird_D', 0.9), ('Bird_E', 0.8)],
-            [('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.5)],
+            [('Bird_C', 0.7)] * 10,
             [('Bird_F', 0.6), ('Bird_G', 0.5)]
         ]
 
@@ -165,7 +165,7 @@ class TestFilterHumans(unittest.TestCase):
         detections = [
             [('Bird_A', 0.9), ('Bird_B', 0.8)],
             [('Bird_D', 0.9), ('Bird_E', 0.8)],
-            [('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.7), ('Bird_C', 0.5), ('Bird_C', 0.7), ('Human_Human', 0.95)],
+            [('Bird_C', 0.7)] * 10 + [('Human_Human', 0.95)],
             [('Bird_F', 0.6), ('Bird_G', 0.5)]
         ]
 
@@ -182,6 +182,7 @@ class TestFilterHumans(unittest.TestCase):
 
         # Assertions
         self.assertEqual(result, expected)
+
 
 if __name__ == '__main__':
     unittest.main()
