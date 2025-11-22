@@ -81,7 +81,8 @@ def measure_all_languages():
 def scrape_wikipedia(sci_name, language, failed=None):
     if failed is None:
         failed = []
-    url = f"https://{language}.wikipedia.org/api/rest_v1/page/summary/{sci_name.replace(" ", "_")}"
+    url_sci_name = sci_name.replace(" ", "_")
+    url = f"https://{language}.wikipedia.org/api/rest_v1/page/summary/{url_sci_name}"
     headers = {'Accept-Encoding': 'gzip', 'User-agent': 'BirdNET-Pi'}
     try:
         resp = requests.get(url=url, headers=headers, timeout=10).json()
