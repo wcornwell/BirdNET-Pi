@@ -3,7 +3,8 @@
 | Afrikaans | 801 | 11.3% |
 | Arabic | 2087 | 29.6% |
 | Catalan | 6773 | 96.0% |
-| Chinese | 6393 | 90.6% |
+| Chinese (simplified) | 6210 | 88.0% |
+| Chinese (traditional) | 833 | 11.8% |
 | Croatian | 6033 | 85.5% |
 | Czech | 6100 | 86.4% |
 | Danish | 5986 | 84.8% |

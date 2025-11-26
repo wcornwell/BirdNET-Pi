@@ -150,7 +150,7 @@ if(isset($_GET["latitude"])){
   $contents = preg_replace("/APPRISE_WEEKLY_REPORT=.*/", "APPRISE_WEEKLY_REPORT=$apprise_weekly_report", $contents);
   $contents = preg_replace("/IMAGE_PROVIDER=.*/", "IMAGE_PROVIDER=$image_provider", $contents);
   $contents = preg_replace("/FLICKR_API_KEY=.*/", "FLICKR_API_KEY=$flickr_api_key", $contents);
-  if(strlen($language) == 2){
+  if(strlen($language) == 2 || strlen($language) == 5){
     $contents = preg_replace("/DATABASE_LANG=.*/", "DATABASE_LANG=$language", $contents);
   }
   $contents = preg_replace("/INFO_SITE=.*/", "INFO_SITE=$info_site", $contents);
@@ -525,7 +525,8 @@ https://discordapp.com/api/webhooks/{WebhookID}/{WebhookToken}
           "ar" => "Arabic",
           "ca" => "Catalan",
           "cs" => "Czech",
-          "zh" => "Chinese",
+          "zh_CN" => "Chinese (simplified)",
+          "zh_TW" => "Chinese (traditional)",
           "hr" => "Croatian",
           "da" => "Danish",
           "nl" => "Dutch",
