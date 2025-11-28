@@ -10,6 +10,17 @@ from scripts.utils.analysis import filter_humans
 
 class TestRunAnalysis(unittest.TestCase):
 
+    def setUp(self):
+        source = os.path.join(TESTDATA, 'Pica pica_30s.wav')
+        self.test_file = os.path.join(TESTDATA, '2024-02-24-birdnet-16:19:37.wav')
+        if os.path.exists(self.test_file):
+            os.unlink(self.test_file)
+        os.symlink(source, self.test_file)
+
+    def tearDown(self):
+        if os.path.exists(self.test_file):
+            os.unlink(self.test_file)
+
     @patch('scripts.utils.helpers._load_settings')
     @patch('scripts.utils.analysis.loadCustomSpeciesList')
     def test_run_analysis(self, mock_loadCustomSpeciesList, mock_load_settings):
@@ -18,7 +29,7 @@ class TestRunAnalysis(unittest.TestCase):
         mock_loadCustomSpeciesList.return_value = []
 
         # Test file
-        test_file = ParseFileName(os.path.join(TESTDATA, '2024-02-24-birdnet-16:19:37.wav'))
+        test_file = ParseFileName(self.test_file)
 
         # Expected results
         expected_results = [
