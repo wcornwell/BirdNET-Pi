@@ -99,6 +99,12 @@ def get_model_labels(model=None):
     if model is None:
         model = get_settings()['MODEL']
     file_name = os.path.join(MODEL_PATH, f'{model}_Labels.txt')
+    if not os.path.exists(file_name):
+        # Fallback to recognizers folder
+        recognizers_path = os.path.join(MODEL_PATH, '..', 'recognizers', f'{model}_Labels.txt')
+        if os.path.exists(recognizers_path):
+            file_name = recognizers_path
+            
     with open(file_name) as f:
         labels = [line.strip() for line in f.readlines()]
     if labels and labels[0].count('_') == 1:
@@ -108,7 +114,10 @@ def get_model_labels(model=None):
 
 def set_label_file():
     lang = get_language()
-    labels = [f'{label}_{lang[label]}\n' for label in get_model_labels()]
+    labels = []
+    for label in get_model_labels():
+        translation = lang.get(label, label)
+        labels.append(f'{label}_{translation}\n')
     file_name = os.path.join(MODEL_PATH, 'labels.txt')
     if os.path.islink(file_name):
         os.remove(file_name)

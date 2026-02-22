@@ -267,7 +267,19 @@ function sendTestNotification(e) {
       <label for="model">Select a Model: </label>
       <select id="modelsel" name="model" class="testbtn">
       <?php
+      // Default built-in models
       $models = array("BirdNET_GLOBAL_6K_V2.4_Model_FP16", "BirdNET_6K_GLOBAL_MODEL");
+      
+      // Look for custom models in the /recognizers folder
+      $recognizers_path = $home."/BirdNET-Pi/recognizers/";
+      if (file_exists($recognizers_path)) {
+        $custom_models = glob($recognizers_path."*.tflite");
+        foreach($custom_models as $cm) {
+          $custom_model_name = basename($cm, ".tflite");
+          $models[] = $custom_model_name;
+        }
+      }
+
       foreach($models as $modelName){
           $isSelected = "";
           if($config['MODEL'] == $modelName){
