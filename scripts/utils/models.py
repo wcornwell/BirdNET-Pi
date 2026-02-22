@@ -32,6 +32,11 @@ def get_model(model=None):
         return Perch()
     elif model == 'BirdNET-Go_classifier_20250916':
         return BirdNETGo20250916(conf.getfloat('SENSITIVITY'))
+    else:
+        # Fallback for custom models
+        class CustomModel(BirdNetV2_4):
+            model_name = model
+        return CustomModel(conf.getfloat('SENSITIVITY'))
 
 
 def get_meta_model(model=None, version=None):
@@ -59,6 +64,12 @@ class Basemodel:
 
     def __init__(self):
         model_path = os.path.join(MODEL_PATH, f'{self.model_name}.tflite')
+        if not os.path.exists(model_path):
+            # Fallback to the recognizers folder for custom models
+            recognizers_path = os.path.join(MODEL_PATH, '..', 'recognizers', f'{self.model_name}.tflite')
+            if os.path.exists(recognizers_path):
+                model_path = recognizers_path
+        
         self.interpreter = tflite.Interpreter(model_path)
         self.interpreter.allocate_tensors()
         input_details = self.interpreter.get_input_details()
