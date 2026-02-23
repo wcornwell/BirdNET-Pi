@@ -103,7 +103,7 @@ function get_com_en_name($sci_name) {
   // Fallback to labels.txt with caching
   if ($custom_labels === null) {
       $custom_labels = [];
-      $labels_file = __ROOT__ . "/scripts/labels.txt";
+      $labels_file = __ROOT__ . "/model/labels.txt";
       if (file_exists($labels_file)) {
           $lines = file($labels_file, FILE_IGNORE_NEW_LINES);
           foreach ($lines as $line) {
@@ -238,7 +238,7 @@ class ImageProvider {
 
   public function __construct() {
     $this->set_db();
-    $opts = ['http' => ['header' => "User-Agent: BirdNET-Pi"]];
+    $opts = ['http' => ['header' => "User-Agent: BirdNET-Pi/1.0 (https://github.com/wcornwell/BirdNET-Pi)"]];
     $this->context = stream_context_create($opts);
   }
 
