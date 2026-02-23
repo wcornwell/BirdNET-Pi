@@ -86,6 +86,16 @@ def get_language(language=None):
     file_name = os.path.join(MODEL_PATH, f'l18n/labels_{language}.json')
     with open(file_name) as f:
         ret = json.loads(f.read())
+
+    # Merge custom model labels if they exist
+    model = get_settings()['MODEL']
+    custom_labels = get_model_labels(model, full_names=True)
+    for entry in custom_labels:
+        if '_' in entry:
+            sci, com = entry.split('_', 1)
+            # Use custom label if it's not already in the language file
+            if sci not in ret:
+                ret[sci] = com
     return ret
 
 
