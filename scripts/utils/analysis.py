@@ -68,6 +68,19 @@ def analyzeAudioData(chunks, overlap, lat, lon, week):
     model.set_meta_data(lat, lon, week)
     predicted_species_list = model.get_species_list()
 
+    # Identify human labels from model labels
+    human_names = set()
+
+    from .helpers import get_model_labels
+    full_labels = get_model_labels(model.model_name, full_names=True)
+    for label in full_labels:
+        if 'Human' in label:
+            # We need the scientific name (the part used in predictions)
+            sci_name = label.split('_')[0] if '_' in label and label.count('_') == 1 else label
+            human_names.add(sci_name)
+    
+    log.debug("Identified human names: %s", human_names)
+
     # Parse every chunk
     for chunk in chunks:
         p = model.predict(chunk)
@@ -76,7 +89,7 @@ def analyzeAudioData(chunks, overlap, lat, lon, week):
 
     labeled = {}
     pred_start = 0.0
-    for p in filter_humans(detections):
+    for p in filter_humans(detections, human_names):
         # Save timestamp and result
         pred_end = pred_start + model.chunk_duration
         labeled[str(pred_start) + ';' + str(pred_end)] = p
@@ -87,7 +100,7 @@ def analyzeAudioData(chunks, overlap, lat, lon, week):
     return labeled, predicted_species_list
 
 
-def filter_humans(predictions):
+def filter_humans(predictions, human_names=None):
     conf = get_settings()
     priv_thresh = conf.getfloat('PRIVACY_THRESHOLD')
     human_cutoff = max(10, int(6000 * priv_thresh / 100.0))
@@ -99,11 +112,14 @@ def filter_humans(predictions):
     except ValueError:
         pass
 
+    if human_names is None:
+        human_names = set()
+
     # mask for humans
     human_mask = [False] * len(predictions)
     for i, prediction in enumerate(predictions):
         for p in prediction[:human_cutoff]:
-            if 'Human' in p[0]:
+            if 'Human' in p[0] or p[0] in human_names:
                 human_mask[i] = True
                 break
 
