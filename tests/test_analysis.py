@@ -194,6 +194,33 @@ class TestFilterHumans(unittest.TestCase):
         # Assertions
         self.assertEqual(result, expected)
 
+    @patch('scripts.utils.helpers._load_settings')
+    def test_filter_humans_with_custom_name(self, mock_load_settings):
+        mock_load_settings.return_value = Settings.with_defaults()
+
+        # Input detections with a name that is in the human_names set
+        # This simulates a custom classifier where the label was stripped to "Homo sapiens"
+        detections = [
+            [('Bird_A', 0.9)],
+            [('Homo sapiens', 0.95), ('Bird_B', 0.8)],
+            [('Bird_C', 0.7)]
+        ]
+
+        human_names = {'Homo sapiens'}
+
+        # Expected output: all detections masked because of the human detection and its neighbours
+        expected = [
+            [('Human_Human', 0.0)],
+            [('Human_Human', 0.0)],
+            [('Human_Human', 0.0)]
+        ]
+
+        # Run filter_humans with the custom name set
+        result = filter_humans(detections, human_names)
+
+        # Assertions
+        self.assertEqual(result, expected)
+
 
 if __name__ == '__main__':
     unittest.main()
