@@ -95,8 +95,20 @@ function get_com_en_name($sci_name) {
   if (!isset($_labels_flickr)) {
     $_labels_flickr = json_decode(file_get_contents(get_home() . "/BirdNET-Pi/model/l18n/labels_en.json"), true);
   }
-  $engname = $_labels_flickr[$sci_name];
-  return $engname;
+  if (isset($_labels_flickr[$sci_name])) {
+    return $_labels_flickr[$sci_name];
+  }
+  // Fallback to labels.txt
+  $labels_file = get_home() . "/BirdNET-Pi/scripts/labels.txt";
+  if (file_exists($labels_file)) {
+    $labels = file($labels_file, FILE_IGNORE_NEW_LINES);
+    foreach ($labels as $line) {
+      if (strpos($line, $sci_name . "_") === 0) {
+        return substr($line, strlen($sci_name) + 1);
+      }
+    }
+  }
+  return $sci_name;
 }
 
 function get_label($record, $sort_by, $date=null) {
@@ -425,6 +437,14 @@ class Wikipedia extends ImageProvider {
   protected function get_from_source($sci_name) {
     $page_title = str_replace(' ', '_', $sci_name);
     $data = $this->get_json("https://en.wikipedia.org/api/rest_v1/page/summary/$page_title");
+    if ($data == false or !isset($data['originalimage'])) {
+        // Fallback to common name
+        $engname = get_com_en_name($sci_name);
+        if ($engname !== $sci_name) {
+            $page_title = str_replace(' ', '_', $engname);
+            $data = $this->get_json("https://en.wikipedia.org/api/rest_v1/page/summary/$page_title");
+        }
+    }
     if ($data == false or !isset($data['originalimage']))
       return;
 
