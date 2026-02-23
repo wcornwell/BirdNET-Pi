@@ -92,22 +92,33 @@ function debug_log($message) {
 }
 
 function get_com_en_name($sci_name) {
+  static $custom_labels = null;
   if (!isset($_labels_flickr)) {
-    $_labels_flickr = json_decode(file_get_contents(get_home() . "/BirdNET-Pi/model/l18n/labels_en.json"), true);
+    $_labels_flickr = json_decode(file_get_contents(__ROOT__ . "/model/l18n/labels_en.json"), true);
   }
   if (isset($_labels_flickr[$sci_name])) {
     return $_labels_flickr[$sci_name];
   }
-  // Fallback to labels.txt
-  $labels_file = get_home() . "/BirdNET-Pi/scripts/labels.txt";
-  if (file_exists($labels_file)) {
-    $labels = file($labels_file, FILE_IGNORE_NEW_LINES);
-    foreach ($labels as $line) {
-      if (strpos($line, $sci_name . "_") === 0) {
-        return substr($line, strlen($sci_name) + 1);
+
+  // Fallback to labels.txt with caching
+  if ($custom_labels === null) {
+      $custom_labels = [];
+      $labels_file = __ROOT__ . "/scripts/labels.txt";
+      if (file_exists($labels_file)) {
+          $lines = file($labels_file, FILE_IGNORE_NEW_LINES);
+          foreach ($lines as $line) {
+              if (strpos($line, "_") !== false) {
+                  list($s, $c) = explode("_", $line, 2);
+                  $custom_labels[$s] = $c;
+              }
+          }
       }
-    }
   }
+
+  if (isset($custom_labels[$sci_name])) {
+      return $custom_labels[$sci_name];
+  }
+
   return $sci_name;
 }
 
@@ -435,18 +446,35 @@ class Wikipedia extends ImageProvider {
   protected $db_path = __ROOT__ . '/scripts/wikipedia.db';
 
   protected function get_from_source($sci_name) {
-    $page_title = str_replace(' ', '_', $sci_name);
-    $data = $this->get_json("https://en.wikipedia.org/api/rest_v1/page/summary/$page_title");
-    if ($data == false or !isset($data['originalimage'])) {
-        // Fallback to common name
-        $engname = get_com_en_name($sci_name);
-        if ($engname !== $sci_name) {
-            $page_title = str_replace(' ', '_', $engname);
-            $data = $this->get_json("https://en.wikipedia.org/api/rest_v1/page/summary/$page_title");
-        }
+    $search_terms = [];
+    $search_terms[] = str_replace(' ', '_', $sci_name); // Scientific Name
+    
+    $engname = get_com_en_name($sci_name);
+    if ($engname !== $sci_name) {
+        $search_terms[] = str_replace(' ', '_', $engname); // Common Name
     }
-    if ($data == false or !isset($data['originalimage']))
-      return;
+
+    // Genus fallback
+    $parts = preg_split('/[ _]/', $sci_name);
+    if (count($parts) > 1) {
+        $search_terms[] = $parts[0]; // Genus Name
+    }
+
+    $data = false;
+    foreach ($search_terms as $term) {
+        debug_log("Wikipedia searching for: $term");
+        $data = $this->get_json("https://en.wikipedia.org/api/rest_v1/page/summary/$term");
+        if ($data !== false && isset($data['originalimage'])) {
+            debug_log("Wikipedia found image for: $term");
+            break;
+        }
+        $data = false;
+    }
+
+    if ($data == false or !isset($data['originalimage'])) {
+        debug_log("Wikipedia search failed for all terms related to: $sci_name");
+        return;
+    }
 
     $image_name = substr($data['originalimage']['source'], strrpos($data['originalimage']['source'], '/') + 1);
     $metadata = $this->get_json("https://commons.wikimedia.org/w/api.php?action=query&titles=File:$image_name&prop=imageinfo&iiprop=extmetadata|size&format=json");
