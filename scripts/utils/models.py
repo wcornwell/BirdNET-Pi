@@ -36,6 +36,16 @@ def get_model(model=None):
         # Fallback for custom models
         class CustomModel(BirdNetV2_4):
             model_name = model
+
+            def set_meta_data(self, lat, lon, week):
+                if self._mdata_model:
+                    self._mdata_model.set_meta_data(lat, lon, week)
+
+            def get_species_list(self):
+                if self._mdata_model:
+                    return self._mdata_model.get_species_list(self.labels)
+                return []
+        
         return CustomModel(conf.getfloat('SENSITIVITY'))
 
 
