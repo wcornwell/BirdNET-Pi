@@ -95,7 +95,7 @@ def save_language(labels, language):
         f.write(json.dumps(OrderedDict(sorted(labels.items())), indent=2, ensure_ascii=False))
 
 
-def get_model_labels(model=None):
+def get_model_labels(model=None, full_names=False):
     if model is None:
         model = get_settings()['MODEL']
     file_name = os.path.join(MODEL_PATH, f'{model}_Labels.txt')
@@ -107,7 +107,7 @@ def get_model_labels(model=None):
             
     with open(file_name) as f:
         labels = [line.strip() for line in f.readlines()]
-    if labels and labels[0].count('_') == 1:
+    if not full_names and labels and labels[0].count('_') == 1:
         labels = [re.sub(r'_.+$', '', label) for label in labels]
     return labels
 
@@ -115,9 +115,26 @@ def get_model_labels(model=None):
 def set_label_file():
     lang = get_language()
     labels = []
-    for label in get_model_labels():
-        translation = lang.get(label, label)
-        labels.append(f'{label}_{translation}\n')
+    
+    # Get scientific names for lookup
+    sci_names = get_model_labels()
+    # Get full names for fallback (contains Sci_Common)
+    full_names = get_model_labels(full_names=True)
+    
+    for sci, full in zip(sci_names, full_names):
+        # Default lookup in language file
+        translation = lang.get(sci)
+        
+        if translation:
+            # Found in global files, use it
+            labels.append(f'{sci}_{translation}\n')
+        elif '_' in full:
+            # Fallback to the common name in the custom labels file
+            # full is "Scientific Name_Common Name"
+            labels.append(f'{full}\n')
+        else:
+            # Absolute fallback
+            labels.append(f'{sci}_{sci}\n')
     file_name = os.path.join(MODEL_PATH, 'labels.txt')
     if os.path.islink(file_name):
         os.remove(file_name)
