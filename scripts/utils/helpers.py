@@ -115,6 +115,10 @@ def get_model_labels(model=None, full_names=False):
         if os.path.exists(recognizers_path):
             file_name = recognizers_path
             
+    # Final safety check before opening
+    if not os.path.exists(file_name):
+        return []
+
     with open(file_name) as f:
         labels = [line.strip() for line in f.readlines()]
     if not full_names and labels and labels[0].count('_') == 1:
