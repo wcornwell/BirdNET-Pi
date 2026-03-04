@@ -122,14 +122,17 @@ def get_model_labels(model=None, full_names=False):
     with open(file_name) as f:
         labels = [line.strip() for line in f.readlines()]
     if not full_names and labels and labels[0].count('_') == 1:
-        seen = set()
-        unique = []
-        for label in labels:
-            sci = re.sub(r'_.+$', '', label)
-            if sci not in seen:
-                seen.add(sci)
-                unique.append(sci)
-        labels = unique
+        # Count how many labels share each scientific name
+        from collections import Counter
+        sci_counts = Counter(re.sub(r'_.+$', '', label) for label in labels)
+        # Strip common name only when the scientific name is unique;
+        # keep the full label when there are duplicates (e.g. multiple
+        # Homo sapiens_* categories) so predictions can distinguish them.
+        labels = [
+            label if sci_counts[re.sub(r'_.+$', '', label)] > 1
+            else re.sub(r'_.+$', '', label)
+            for label in labels
+        ]
     return labels
 
 
