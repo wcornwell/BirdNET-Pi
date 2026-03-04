@@ -122,7 +122,14 @@ def get_model_labels(model=None, full_names=False):
     with open(file_name) as f:
         labels = [line.strip() for line in f.readlines()]
     if not full_names and labels and labels[0].count('_') == 1:
-        labels = [re.sub(r'_.+$', '', label) for label in labels]
+        seen = set()
+        unique = []
+        for label in labels:
+            sci = re.sub(r'_.+$', '', label)
+            if sci not in seen:
+                seen.add(sci)
+                unique.append(sci)
+        labels = unique
     return labels
 
 
