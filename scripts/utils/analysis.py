@@ -103,7 +103,8 @@ def analyzeAudioData(chunks, overlap, lat, lon, week):
 def filter_humans(predictions, human_names=None):
     conf = get_settings()
     priv_thresh = conf.getfloat('PRIVACY_THRESHOLD')
-    human_cutoff = max(10, int(6000 * priv_thresh / 100.0))
+    num_labels = len(predictions[0]) if predictions else 6000
+    human_cutoff = max(10, int(num_labels * priv_thresh / 100.0))
     log.debug("HUMAN-CUTOFF AT: %d", human_cutoff)
     try:
         if conf.getint('EXTRACTION_LENGTH') > 9:
