@@ -103,8 +103,14 @@ def analyzeAudioData(chunks, overlap, lat, lon, week):
 def filter_humans(predictions, human_names=None):
     conf = get_settings()
     priv_thresh = conf.getfloat('PRIVACY_THRESHOLD')
+    
+    # If privacy threshold is explicitly 0, skip the filter entirely
+    if priv_thresh == 0.0:
+        return predictions
+
     num_labels = len(predictions[0]) if predictions else 6000
-    human_cutoff = max(10, int(num_labels * priv_thresh / 100.0))
+    # Minimum cutoff of 1 if threshold is set > 0, otherwise scale by percentage
+    human_cutoff = max(1, int(num_labels * priv_thresh / 100.0))
     log.debug("HUMAN-CUTOFF AT: %d", human_cutoff)
     try:
         if conf.getint('EXTRACTION_LENGTH') > 9:
