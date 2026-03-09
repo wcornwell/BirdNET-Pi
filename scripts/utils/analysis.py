@@ -69,16 +69,12 @@ def analyzeAudioData(chunks, overlap, lat, lon, week):
     predicted_species_list = model.get_species_list()
 
     # Identify privacy-sensitive human labels from model labels.
-    # Only voice/vocal labels trigger privacy scrub; non-voice labels
-    # (Engines, Siren, Music, etc.) pass through as normal detections.
     human_names = set()
-    PRIVACY_KEYWORDS = {'Human', 'vocal', 'voice', 'whistle', 'non-vocal'}
 
     from .helpers import get_model_labels
     full_labels = get_model_labels(model.model_name, full_names=True)
     for label in full_labels:
-        label_lower = label.lower()
-        if any(kw.lower() in label_lower for kw in PRIVACY_KEYWORDS):
+        if 'Human' in label:
             # We need the scientific name (the part used in predictions)
             sci_name = label.split('_')[0] if '_' in label and label.count('_') == 1 else label
             human_names.add(sci_name)
@@ -125,6 +121,7 @@ def filter_humans(predictions, human_names=None):
     for i, prediction in enumerate(predictions):
         for p in prediction[:human_cutoff]:
             if 'Human' in p[0] or p[0] in human_names:
+                log.warning('PRIVACY FLAG TRIGGERED by label: %s (confidence: %s) at rank %d', p[0], p[1], prediction.index(p)+1)
                 human_mask[i] = True
                 break
 
