@@ -94,18 +94,25 @@ class TestFilterHumans(unittest.TestCase):
 
         # Input detections with humans
         detections = [
-            [('Human_Human', 0.95), ('Bird_A', 0.8)],
+            [('Human', 0.95), ('Bird_A', 0.8)],
             [('Bird_A', 0.9), ('Bird_B', 0.8)],
             [('Bird_C', 0.9), ('Bird_D', 0.8)],
             [('Bird_B', 0.7), ('Human vocal_Human vocal', 0.9)]
         ]
 
-        # Expected output
+        # Expected output (since neighbor filtering is off, only index 0 and 3 are masked if detected)
+        # However, settings default PRIVACY_THRESHOLD is 0 in with_defaults(), 
+        # but filter_humans might be called with implicit defaults. 
+        # In TestFilterHumans, we need to set a threshold to trigger it.
+        settings = Settings.with_defaults()
+        settings['PRIVACY_THRESHOLD'] = 1
+        mock_load_settings.return_value = settings
+
         expected = [
-            [('Human_Human', 0.0)],
-            [('Human_Human', 0.0)],
-            [('Human_Human', 0.0)],
-            [('Human_Human', 0.0)]
+            [('Human', 0.95)],
+            [('Bird_A', 0.9), ('Bird_B', 0.8)],
+            [('Bird_C', 0.9), ('Bird_D', 0.8)],
+            [('Human vocal_Human vocal', 0.9)]
         ]
 
         # Run filter_humans
@@ -126,12 +133,16 @@ class TestFilterHumans(unittest.TestCase):
             [('Bird_F', 0.6), ('Bird_G', 0.5)]
         ]
 
-        # Expected output
+        # Expected output (Neighbor filtering OFF)
+        settings = Settings.with_defaults()
+        settings['PRIVACY_THRESHOLD'] = 1
+        mock_load_settings.return_value = settings
+
         expected = [
             [('Bird_A', 0.9), ('Bird_B', 0.8)],
-            [('Human_Human', 0.0)],
-            [('Human_Human', 0.0)],
-            [('Human_Human', 0.0)]
+            [('Bird_D', 0.9), ('Bird_E', 0.8)],
+            [('Human_Human', 0.95)],
+            [('Bird_F', 0.6), ('Bird_G', 0.5)]
         ]
 
         # Run filter_humans
@@ -152,11 +163,12 @@ class TestFilterHumans(unittest.TestCase):
             [('Bird_F', 0.6), ('Bird_G', 0.5)]
         ]
 
-        # Expected output
+        # Expected output (Neighbor filtering OFF, human at rank 11, threshold 1% => rank 1)
+        # result: NO MASKING because human is at rank 11
         expected = [
             [('Bird_A', 0.9), ('Bird_B', 0.8)],
             [('Bird_D', 0.9), ('Bird_E', 0.8)],
-            [('Bird_C', 0.7)] * 10,
+            [('Bird_C', 0.7)] * 10 + [('Human', 0.95)],
             [('Bird_F', 0.6), ('Bird_G', 0.5)]
         ]
 
@@ -180,12 +192,13 @@ class TestFilterHumans(unittest.TestCase):
             [('Bird_F', 0.6), ('Bird_G', 0.5)]
         ]
 
-        # Expected output
+        # Expected output (Threshold 1% => rank 1 checks)
+        # Human at rank 11, so NO masking
         expected = [
             [('Bird_A', 0.9), ('Bird_B', 0.8)],
-            [('Human_Human', 0.0)],
-            [('Human_Human', 0.0)],
-            [('Human_Human', 0.0)]
+            [('Bird_D', 0.9), ('Bird_E', 0.8)],
+            [('Bird_C', 0.7)] * 10 + [('Human', 0.95)],
+            [('Bird_F', 0.6), ('Bird_G', 0.5)]
         ]
 
         # Run filter_humans
@@ -208,11 +221,15 @@ class TestFilterHumans(unittest.TestCase):
 
         human_names = {'Homo sapiens'}
 
-        # Expected output: all detections masked because of the human detection and its neighbours
+        # Expected output: Only the second one masked as human, neighbor filtering is OFF
+        settings = Settings.with_defaults()
+        settings['PRIVACY_THRESHOLD'] = 1
+        mock_load_settings.return_value = settings
+
         expected = [
-            [('Human_Human', 0.0)],
-            [('Human_Human', 0.0)],
-            [('Human_Human', 0.0)]
+            [('Bird_A', 0.9)],
+            [('Homo sapiens', 0.95)],
+            [('Bird_C', 0.7)]
         ]
 
         # Run filter_humans with the custom name set
@@ -220,6 +237,29 @@ class TestFilterHumans(unittest.TestCase):
 
         # Assertions
         self.assertEqual(result, expected)
+
+
+class TestPrivacyThresholdScaling(unittest.TestCase):
+
+    @patch('scripts.utils.helpers._load_settings')
+    def test_threshold_scaling(self, mock_load_settings):
+        # 5% threshold => check top 5
+        settings = Settings.with_defaults()
+        settings['PRIVACY_THRESHOLD'] = 5
+        mock_load_settings.return_value = settings
+
+        # Human at rank 5
+        detections = [
+            [('Bird_1', 0.9), ('Bird_2', 0.8), ('Bird_3', 0.7), ('Bird_4', 0.6), ('Human', 0.5)],
+            [('Bird_1', 0.9), ('Bird_2', 0.8), ('Bird_3', 0.7), ('Bird_4', 0.6), ('Bird_5', 0.5), ('Human', 0.4)]
+        ]
+
+        # First chunk: Human at rank 5, should be masked
+        # Second chunk: Human at rank 6, should NOT be masked
+        result = filter_humans(detections)
+
+        self.assertEqual(result[0], [('Human', 0.5)])
+        self.assertEqual(result[1][:5], [('Bird_1', 0.9), ('Bird_2', 0.8), ('Bird_3', 0.7), ('Bird_4', 0.6), ('Bird_5', 0.5)])
 
 
 if __name__ == '__main__':
