@@ -132,18 +132,17 @@ def filter_humans(predictions, human_names=None):
                 human_labels[i] = p
                 break
 
-    # mask for predictions that have a human neighbour
-    human_neighbour_mask = [False] * len(predictions)
-    for i, _ in enumerate(human_mask):
     # Neighbor filtering disabled for now per user request
     human_neighbour_mask = [False] * len(predictions)
-    # for i, _ in enumerate(human_mask):
-    #     if i != 0 and human_mask[i - 1]:
-    #         human_neighbour_mask[i] = True
-    #         if not human_labels[i]: human_labels[i] = human_labels[i - 1]
-    #     if i != len(human_mask) - 1 and human_mask[i + 1]:
-    #         human_neighbour_mask[i] = True
-    #         if not human_labels[i]: human_labels[i] = human_labels[i + 1]
+    """
+    for i, _ in enumerate(human_mask):
+        if i != 0 and human_mask[i - 1]:
+            human_neighbour_mask[i] = True
+            if not human_labels[i]: human_labels[i] = human_labels[i - 1]
+        if i != len(human_mask) - 1 and human_mask[i + 1]:
+            human_neighbour_mask[i] = True
+            if not human_labels[i]: human_labels[i] = human_labels[i + 1]
+    """
 
     clean_detections = []
     for prediction, human, has_human_neighbour, h_label in zip(predictions, human_mask, human_neighbour_mask, human_labels):
