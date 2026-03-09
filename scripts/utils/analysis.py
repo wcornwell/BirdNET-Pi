@@ -73,8 +73,11 @@ def analyzeAudioData(chunks, overlap, lat, lon, week):
 
     from .helpers import get_model_labels
     full_labels = get_model_labels(model.model_name, full_names=True)
+    # Combine common privacy-sensitive keywords
+    privacy_keywords = ['Human', 'Homo sapiens', 'Engine', 'Siren', 'Noise', 'Screech', 'Whistle']
+    
     for label in full_labels:
-        if 'Human' in label:
+        if any(key.lower() in label.lower() for key in privacy_keywords):
             # We need the scientific name (the part used in predictions)
             sci_name = label.split('_')[0] if '_' in label and label.count('_') == 1 else label
             human_names.add(sci_name)
@@ -126,30 +129,27 @@ def filter_humans(predictions, human_names=None):
     human_labels = [None] * len(predictions)
     for i, prediction in enumerate(predictions):
         for rank, p in enumerate(prediction[:human_cutoff], 1):
-            if 'Human' in p[0] or p[0] in human_names:
-                log.info('Privacy filter ACTIVE: Human sound detected at rank %d (confidence: %s, label: %s)', rank, p[1], p[0])
+            # Check if label contains privacy keywords or is in the human_names set
+            label_name = p[0].lower()
+            privacy_keywords = ['human', 'homo sapiens', 'engine', 'siren', 'noise', 'screech', 'whistle']
+            if any(key in label_name for key in privacy_keywords) or p[0] in human_names:
+                log.info('Privacy filter ACTIVE: Human/Sensitive sound detected at rank %d (confidence: %s, label: %s)', rank, p[1], p[0])
                 human_mask[i] = True
                 human_labels[i] = p
                 break
 
     # Neighbor filtering disabled for now per user request
     human_neighbour_mask = [False] * len(predictions)
-    """
-    for i, _ in enumerate(human_mask):
-        if i != 0 and human_mask[i - 1]:
-            human_neighbour_mask[i] = True
-            if not human_labels[i]: human_labels[i] = human_labels[i - 1]
-        if i != len(human_mask) - 1 and human_mask[i + 1]:
-            human_neighbour_mask[i] = True
-            if not human_labels[i]: human_labels[i] = human_labels[i + 1]
-    """
 
     clean_detections = []
     for prediction, human, has_human_neighbour, h_label in zip(predictions, human_mask, human_neighbour_mask, human_labels):
         if human or has_human_neighbour:
             if not human and has_human_neighbour:
                 log.info('Privacy filter ACTIVE: Masking neighbor of human detection.')
-            prediction = [h_label if h_label else ('Human', 0.0)]
+            
+            # CRITICAL: Replaced the original label with 'Human' and FORCE confidence to 0.0
+            # This ensures it is logged as 'Human' but NOT saved to the database as a confident detection.
+            prediction = [('Human', 0.0)]
         else:
             prediction = prediction[:10]
         clean_detections.append(prediction)
