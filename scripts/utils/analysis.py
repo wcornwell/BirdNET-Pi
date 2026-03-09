@@ -108,10 +108,9 @@ def filter_humans(predictions, human_names=None):
     if priv_thresh == 0.0:
         return predictions
 
-    num_labels = len(predictions[0]) if predictions else 6000
-    # Minimum cutoff of 1 if threshold is set > 0, otherwise scale by percentage
-    human_cutoff = max(1, int(num_labels * priv_thresh / 100.0))
-    log.debug("HUMAN-CUTOFF AT: %d", human_cutoff)
+    # Less extreme cutoff: 1% = top 1 result, 5% = top 5 results, etc.
+    human_cutoff = max(1, int(priv_thresh))
+    log.debug("HUMAN-CUTOFF AT RANK: %d", human_cutoff)
     try:
         if conf.getint('EXTRACTION_LENGTH') > 9:
             log.warning("EXTRACTION_LENGTH is set to %d. Privacy filter might miss human sound, "
@@ -124,26 +123,34 @@ def filter_humans(predictions, human_names=None):
 
     # mask for humans
     human_mask = [False] * len(predictions)
+    human_labels = [None] * len(predictions)
     for i, prediction in enumerate(predictions):
-        for p in prediction[:human_cutoff]:
+        for rank, p in enumerate(prediction[:human_cutoff], 1):
             if 'Human' in p[0] or p[0] in human_names:
-                log.warning('PRIVACY FLAG TRIGGERED by label: %s (confidence: %s) at rank %d', p[0], p[1], prediction.index(p)+1)
+                log.info('Privacy filter ACTIVE: Human sound detected at rank %d (confidence: %s, label: %s)', rank, p[1], p[0])
                 human_mask[i] = True
+                human_labels[i] = p
                 break
 
     # mask for predictions that have a human neighbour
     human_neighbour_mask = [False] * len(predictions)
     for i, _ in enumerate(human_mask):
-        if i != 0 and human_mask[i - 1]:
-            human_neighbour_mask[i] = True
-        if i != len(human_mask) - 1 and human_mask[i + 1]:
-            human_neighbour_mask[i] = True
+    # Neighbor filtering disabled for now per user request
+    human_neighbour_mask = [False] * len(predictions)
+    # for i, _ in enumerate(human_mask):
+    #     if i != 0 and human_mask[i - 1]:
+    #         human_neighbour_mask[i] = True
+    #         if not human_labels[i]: human_labels[i] = human_labels[i - 1]
+    #     if i != len(human_mask) - 1 and human_mask[i + 1]:
+    #         human_neighbour_mask[i] = True
+    #         if not human_labels[i]: human_labels[i] = human_labels[i + 1]
 
     clean_detections = []
-    for prediction, human, has_human_neighbour in zip(predictions, human_mask, human_neighbour_mask):
+    for prediction, human, has_human_neighbour, h_label in zip(predictions, human_mask, human_neighbour_mask, human_labels):
         if human or has_human_neighbour:
-            log.debug('Overwriting prediction %s', prediction[0])
-            prediction = [('Human_Human', 0.0)]
+            if not human and has_human_neighbour:
+                log.info('Privacy filter ACTIVE: Masking neighbor of human detection.')
+            prediction = [h_label if h_label else ('Human', 0.0)]
         else:
             prediction = prediction[:10]
         clean_detections.append(prediction)
@@ -183,7 +190,15 @@ def run_analysis(file):
     confident_detections = []
     for time_slot, entries in raw_detections.items():
         sci_name, confidence = entries[0]
-        log.info('%s-(%s_%s, %s)', time_slot, sci_name, names.get(sci_name, sci_name), confidence)
+        com_name = names.get(sci_name, sci_name)
+        
+        # Avoid redundant logging for Human labels
+        if sci_name == 'Human' and com_name == 'Human':
+            display_name = 'Human'
+        else:
+            display_name = f"{sci_name}_{com_name}"
+            
+        log.info('%s-(%s, %s)', time_slot, display_name, confidence)
         for sci_name, confidence in entries:
             if confidence >= conf.getfloat('CONFIDENCE'):
                 com_name = names.get(sci_name, sci_name)
