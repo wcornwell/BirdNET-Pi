@@ -247,12 +247,15 @@ Restart=on-failure
 RestartSec=5
 Type=simple
 User=${USER}
-ExecStart=$HOME/BirdNET-Pi/birdnet/bin/streamlit run $HOME/BirdNET-Pi/scripts/plotly_stats.py --browser.gatherUsageStats false --server.address localhost --server.baseUrlPath "/stats"
+ExecStart=$HOME/BirdNET-Pi/birdnet/bin/streamlit run $HOME/BirdNET-Pi/scripts/plotly_stats.py --browser.gatherUsageStats false --server.address 0.0.0.0 --server.port 8501 --server.baseUrlPath "/stats"
 
 [Install]
 WantedBy=multi-user.target
 EOF
   ln -sf $HOME/BirdNET-Pi/templates/birdnet_stats.service /usr/lib/systemd/system
+  # Remove any override.conf that might conflict with the service template
+  rm -rf /etc/systemd/system/birdnet_stats.service.d
+  systemctl daemon-reload
   systemctl enable birdnet_stats.service
 }
 
