@@ -83,7 +83,7 @@ def normalise_com_name(df):
     latest_com_names = df.groupby('Sci_Name').tail(1)
     df.rename(columns={'Com_Name': 'Directory'}, inplace=True)
     df['DateTime'] = pd.to_datetime(df['Date'] + " " + df['Time'])
-    return df.merge(latest_com_names[['Sci_Name', 'Com_Name']].set_index('Sci_Name'), how='left', on='Sci_Name').set_index('DateTime')
+    return df.merge(latest_com_names[['Sci_Name', 'Com_Name']].set_index('Sci_Name'), how='left', left_on='Sci_Name', right_index=True).set_index('DateTime')
 
 
 conn = get_connection(URI_SQLITE_DB)
