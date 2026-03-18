@@ -1,0 +1,391 @@
+type,label,precision,recall
+overall_micro,,0.984806,0.955563
+overall_macro,,0.984700,0.949496
+species,Acanthagenys rufogularis_Spiny-cheeked Honeyeater,0.875000,0.921053
+species,Acanthiza apicalis_Inland Thornbill,0.961538,0.892857
+species,Acanthiza chrysorrhoa_Yellow-rumped_Thornbill,0.980392,0.980392
+species,Acanthiza lineata_Striated Thornbill,1.000000,0.957447
+species,Acanthiza nana_Yellow Thornbill,1.000000,0.975000
+species,Acanthiza pusilla_Brown Thornbill,0.952381,1.000000
+species,Acanthiza reguloides_Buff-rumped Thornbill,1.000000,0.962264
+species,Acanthiza uropygialis_Chestnut-rumped Thornbill,1.000000,1.000000
+species,Acanthorhynchus tenuirostris_Eastern Spinebill,0.970588,0.942857
+species,Acridotheres tristis_Common Myna,1.000000,0.967742
+species,Acrocephalus australis_Australian Reed Warbler,1.000000,0.980392
+species,Adelotus brevis_Tusked Frog,1.000000,0.956522
+species,Aegotheles cristatus_Australian Owlet Nightjar,1.000000,1.000000
+species,Aidemosyne modesta_Plum-headed Finch,1.000000,1.000000
+species,Ailuroedus crassirostris_Green Catbird,1.000000,0.978723
+species,Aleeta curvicosta_Floury Baker,0.956522,0.880000
+species,Alisterus scapularis_Australian King-Parrot,0.975000,0.951220
+species,Amytornis barbatus_Grey Grasswren,1.000000,1.000000
+species,Amytornis goyderi_Eyrean Grasswren,0.977273,1.000000
+species,Amytornis modestus_Thick-billed Grasswren,0.984615,1.000000
+species,Anas gracilis_Grey Teal,1.000000,1.000000
+species,Anas superciliosa_Pacific Black Duck,1.000000,0.962963
+species,Anhinga novaehollandiae_Australasian Darter,1.000000,0.857143
+species,Anthochaera carunculata_Red Wattlebird,0.936170,0.936170
+species,Anthochaera chrysoptera_Little Wattlebird,1.000000,0.976190
+species,Anthochaera phrygia_Regent Honeyeater,0.932203,1.000000
+species,Anthus novaeseelandiae_Australian Pipit,0.953125,1.000000
+species,Aphelocephala leucopsis_Southern Whiteface,0.961538,0.833333
+species,Aphelocephala nigricincta_Banded Whiteface,1.000000,0.960000
+species,Aprosmictus erythropterus_Red-winged Parrot,1.000000,1.000000
+species,Aquila audax_Wedge-tailed Eagle,0.961538,1.000000
+species,Ardea pacifica_White-necked Heron,1.000000,0.857143
+species,Artamus cinereus_Black-faced Woodswallow,1.000000,0.880000
+species,Artamus cyanopterus_Dusky Woodswallow,1.000000,0.969697
+species,Artamus leucorynchus_White-breasted Woodswallow,0.821429,0.851852
+species,Artamus minor_Little Woodswallow,0.937500,0.714286
+species,Artamus personatus_Masked Woodswallow,0.935484,0.906250
+species,Artamus superciliosus_White-browed Woodswallow,0.807692,0.807692
+species,Arunta perulata_White Drummer,0.983333,1.000000
+species,Atrapsalta collina_Sandstone Squeaker,0.900000,0.720000
+species,Atrapsalta corticina_Bark Squeaker,0.964286,0.729730
+species,Atrapsalta encaustica_Black Squeaker,1.000000,0.966667
+species,Austrosalomona falcata_Olive-green Coastal Katydid,1.000000,1.000000
+species,Aviceda subcristata_Pacific Baza,1.000000,1.000000
+species,Aythya australis_Hardhead,1.000000,0.882353
+species,Barnardius zonarius_Australian Ringneck,1.000000,1.000000
+species,Birrima castanea_Red Tree-ticker,1.000000,1.000000
+species,Biziura lobata_Musk Duck,1.000000,1.000000
+species,Bos taurus_Cattle,0.968750,0.885714
+species,Cacatua galerita_Sulphur-crested Cockatoo,1.000000,0.983051
+species,Cacatua leadbeateri_Pink Cockatoo,1.000000,1.000000
+species,Cacatua sanguinea_Little Corella,1.000000,0.950820
+species,Cacatua tenuirostris_Long-billed Corella,1.000000,0.916667
+species,Cacomantis flabelliformis_Fan-tailed Cuckoo,1.000000,1.000000
+species,Cacomantis variolosus_Sahul Brush Cuckoo,1.000000,0.914286
+species,Caligavis chrysops_Yellow-faced Honeyeater,0.935484,1.000000
+species,Callocephalon fimbriatum_Gang-gang Cockatoo,1.000000,0.909091
+species,Calyptorhynchus banksii_Red-tailed Black-Cockatoo,1.000000,0.974359
+species,Calyptorhynchus funereus_Yellow-tailed Black-Cockatoo,0.984127,0.968750
+species,Calyptorhynchus lathami_Glossy Black-Cockatoo,1.000000,0.973684
+species,Canis lupis familiaris_Domestic Dog,0.961538,0.925926
+species,Canis lupus dingo_Dingo,1.000000,1.000000
+species,Capra hircus_Goat,1.000000,0.950820
+species,Centropus phasianinus_Pheasant Coucal,0.979167,1.000000
+species,Certhionyx variegatus_Pied Honeyeater,1.000000,1.000000
+species,Ceyx azureus_Azure Kingfisher,1.000000,1.000000
+species,Chalcites basalis_Horsfield's Bronze-Cuckoo,1.000000,1.000000
+species,Chalcites lucidus_Shining Bronze-Cuckoo,1.000000,1.000000
+species,Chalcites osculans_Black-eared Cuckoo,1.000000,0.973684
+species,Chalcophaps longirostris_Pacific Emerald Dove,1.000000,0.937500
+species,Chenonetta jubata_Maned Duck,1.000000,0.926829
+species,Cheramoeca leucosterna_White-backed Swallow,1.000000,0.975610
+species,Chroicocephalus novaehollandiae_Silver Gull,0.975000,1.000000
+species,Cincloramphus cruralis_Brown Songlark,0.969697,1.000000
+species,Cincloramphus mathewsi_Rufous Songlark,0.974359,1.000000
+species,Cinclosoma cinnamomeum_Cinnamon Quail-thrush,1.000000,1.000000
+species,Cinclosoma punctatum_Spotted Quail-thrush,1.000000,0.960000
+species,Circus approximans_Swamp Harrier,1.000000,0.969697
+species,Cisticola exilis_Golden-headed Cisticola,1.000000,0.974359
+species,Climacteris erythrops_Red-browed Treecreeper,1.000000,0.923077
+species,Climacteris picumnus_Brown Treecreeper,1.000000,1.000000
+species,Clinopsalta autumna_Ferny Acacia Cicada,0.900000,0.818182
+species,Colleeneremia quiritatus_Screaming Tree Frog,1.000000,0.976744
+species,Colleeneremia rubella_Desert Tree Frog,0.979167,0.979167
+species,Colluricincla harmonica_Gray Shrikethrush,0.945455,0.981132
+species,Colluricincla megarhyncha_Little Shrikethrush,1.000000,0.800000
+species,Columba leucomela_White-headed Pigeon,0.962963,0.838710
+species,Columba livia_Rock Pigeon,1.000000,0.975000
+species,Conocephalus albescens_Whittish Meadow Katydid,1.000000,0.965517
+species,Conocephalus upoluensis_Greenish Meadow Katydid,0.965517,0.965517
+species,Coracina maxima_Ground Cuckooshrike,1.000000,0.966667
+species,Coracina novaehollandiae_Black-faced Cuckooshrike,1.000000,0.916667
+species,Coracina papuensis_White-bellied Cuckooshrike,1.000000,0.894737
+species,Corcorax melanorhamphos_White-winged Chough,0.956522,1.000000
+species,Cormobates leucophaea_White-throated Treecreeper,0.953125,0.983871
+species,Corvus bennetti_Little Crow,1.000000,0.982759
+species,Corvus coronoides_Australian Raven,1.000000,0.960000
+species,Corvus mellori_Little Raven,0.964286,0.947368
+species,Corvus orru_Torresian Crow,1.000000,0.892857
+species,Corvus tasmanicus_Forest Raven,0.968750,1.000000
+species,Coturnix pectoralis_Stubble Quail,1.000000,1.000000
+species,Cracticus nigrogularis_Pied Butcherbird,1.000000,0.979592
+species,Cracticus torquatus_Grey Butcherbird,1.000000,1.000000
+species,Crinia deserticola_Desert Froglet,1.000000,1.000000
+species,Crinia parinsignifera_Eastern Sign-bearing Froglet,1.000000,0.941176
+species,Crinia signifera_Common Eastern Froglet,0.968750,1.000000
+species,Crinia tinnula_Wallum froglet,0.976190,0.976190
+species,Cyclochila australasiae_Green Grocer,1.000000,1.000000
+species,Cyclorana platycephala_Eastern Water-holding Frog,1.000000,1.000000
+species,Cygnus atratus_Black Swan,1.000000,1.000000
+species,Cystosoma saundersii_Bladder Cicada,1.000000,1.000000
+species,Dacelo novaeguineae_Laughing Kookaburra,1.000000,0.968750
+species,Daphoenositta chrysoptera_Varied Sitella,1.000000,0.968750
+species,Dasyornis brachypterus_Eastern Bristlebird,1.000000,0.944444
+species,Dicaeum hirundinaceum_Mistletoebird,0.973684,0.880952
+species,Dicrurus bracteatus_Spangled Drongo,1.000000,1.000000
+species,Diemeniana euronotiana_Golden Twanger,1.000000,1.000000
+species,Diptera_Flies,1.000000,0.707317
+species,Dromaius novaehollandiae_Emu,1.000000,0.846154
+species,Edolisoma tenuirostre_Sahul Cicadabird,1.000000,1.000000
+species,Egretta novaehollandiae_White-faced Heron,1.000000,0.833333
+species,Elanus axillaris_Black-shouldered Kite,1.000000,0.909091
+species,Emblema pictum_Painted Finch,1.000000,0.931034
+species,Entomyzon cyanotis_Blue-faced Honeyeater,1.000000,1.000000
+species,Eolophus roseicapilla_Galah,0.983871,1.000000
+species,Eopsaltria australis_Eastern Yellow Robin,0.984615,1.000000
+species,Epthianura albifrons_White-fronted Chat,1.000000,0.840000
+species,Epthianura aurifrons_Orange Chat,1.000000,1.000000
+species,Epthianura crocea_Yellow Chat,1.000000,0.960000
+species,Epthianura tricolor_Crimson Chat,0.966667,0.966667
+species,Eudynamys orientalis_Pacific Koel,1.000000,0.983051
+species,Eurepa marginipennis_Mottled Bush Cricket,1.000000,1.000000
+species,Eurostopodus argus_Spotted Nightjar,1.000000,1.000000
+species,Eurostopodus mystacalis_White-throated Nightjar,1.000000,1.000000
+species,Eurystomus orientalis_Dollarbird,1.000000,1.000000
+species,Falco berigora_Brown Falcon,1.000000,0.957447
+species,Falco cenchroides_Nankeen Kestrel,0.978261,0.957447
+species,Falco longipennis_Australian Hobby,0.956522,0.956522
+species,Falco peregrinus_Peregrine Falcon,1.000000,1.000000
+species,Falco subniger_Black Falcon,1.000000,0.625000
+species,Falcunculus frontatus_Eastern Shrike-tit,1.000000,0.923077
+species,Froggattina australis_Froggatt's Buzzer,1.000000,0.948718
+species,Fulica atra_Eurasian Coot,1.000000,0.913043
+species,Galanga labeculata_Double-spotted Cicada,0.857143,0.923077
+species,Gallinago hardwickii_Latham's Snipe,1.000000,1.000000
+species,Gallinula tenebrosa_Dusky Moorhen,0.947368,0.900000
+species,Gallirallus philippensis_Buff-banded Rail,1.000000,1.000000
+species,Gelochelidon macrotarsa_Australian Tern,1.000000,0.954545
+species,Geopelia cuneata_Diamond Dove,1.000000,1.000000
+species,Geopelia humeralis_Bar-shouldered Dove,1.000000,0.983333
+species,Geopelia placida_Peaceful Dove,1.000000,1.000000
+species,Gerygone fusca_Western Gerygone,1.000000,1.000000
+species,Gerygone mouki_Brown Gerygone,0.966667,0.920635
+species,Gerygone olivacea_White-throated Gerygone,1.000000,1.000000
+species,Glareola isabella_Australian Pratincole,1.000000,0.966667
+species,Glossopsitta concinna_Musk Lorikeet,1.000000,1.000000
+species,Grallina cyanoleuca_Magpie-lark,0.981481,1.000000
+species,Gryllodes sigillatus_Indian House Cricket,0.964286,1.000000
+species,Gryllotalpa australis_Southern Mole Cricket,1.000000,0.921053
+species,Gryllotalpa monanka_Dark Night Mole Cricket,1.000000,1.000000
+species,Gryllotalpa pluvialis_Chirping Mole Cricket,0.983871,1.000000
+species,Gymnorhina tibicen_Australian Magpie,0.969231,0.984375
+species,Haemopsalta rubea_Red Squeaker,0.950000,0.760000
+species,Haliastur sphenurus_Whistling Kite,1.000000,1.000000
+species,Henicopsaltria eydouxii_Razor Grinder,1.000000,0.984375
+species,Heteroscenes pallidus_Pallid Cuckoo,1.000000,0.969231
+species,Hieraaetus morphnoides_Little Eagle,1.000000,0.967742
+species,Himantopus leucocephalus_Pied Stilt,1.000000,1.000000
+species,Hirundapus caudacutus_White-throated Needletail,1.000000,0.968750
+species,Hirundo neoxena_Welcome Swallow,0.976744,0.954545
+species,Homo sapiens_Engines,0.916667,0.500000
+species,Homo sapiens_Guns and Fireworks,0.941176,0.941176
+species,Homo sapiens_Human Voice,0.897959,0.698413
+species,Homo sapiens_Music,0.825000,0.868421
+species,Homo sapiens_Power Tools and Machinery,0.928571,0.812500
+species,Homo sapiens_Siren,1.000000,0.837209
+species,Hylacola pyrrhopygia_Chestnut-rumped Heathwren,1.000000,0.933333
+species,Icthyophaga leucogaster_White-bellied Sea Eagle,1.000000,1.000000
+species,Lalage tricolor_White-winged Triller,1.000000,0.872340
+species,Lepidogryllus spp._Mottled Field Crickets,1.000000,1.000000
+species,Leucosarcia melanoleuca_Wonga Pigeon,1.000000,0.933333
+species,Lewinia pectoralis_Lewin's Rail,1.000000,0.950000
+species,Lichenostomus virescens_Singing Honeyeater,1.000000,1.000000
+species,Lichmera indistincta_Brown Honeyeater,1.000000,0.975610
+species,Limnodynastes dumerilii_Eastern Banjo Frog,1.000000,0.815789
+species,Limnodynastes fletcheri_Barking Frog,0.941176,0.888889
+species,Limnodynastes grayi_Scarlet-sided Banjo Frog,1.000000,1.000000
+species,Limnodynastes interioris_Giant Banjo Frog,0.909091,1.000000
+species,Limnodynastes peronii_Striped Marsh Frog,1.000000,0.902439
+species,Limnodynastes salmini_Salmon-striped Frog,1.000000,0.952381
+species,Limnodynastes tasmaniensis_Spotted Marsh Frog,0.857143,0.888889
+species,Litoria fallax_Eastern Dwarf Tree Frog,0.969697,0.984615
+species,Litoria freycineti_Wallum Rocket Frog,1.000000,1.000000
+species,Litoria gracilenta_Dainty Green Tree Frog,1.000000,0.969697
+species,Litoria latopalmata_Broad-palmed Rocket Frog,0.965517,0.933333
+species,Litoria lesueuri_Lesueurs Frog,1.000000,1.000000
+species,Litoria peronii_Peron's Tree Frog,0.959184,0.886792
+species,Litoria revelata_Southern Whirring Tree Frog,1.000000,0.954545
+species,Litoria tyleri_Tyler's Tree Frog,0.956522,0.956522
+species,Litoria verreauxii_Whistling Tree Frog,1.000000,0.956522
+species,Macropygia phasianella_Brown Cuckoo-Dove,0.967213,1.000000
+species,Malacorhynchus membranaceus_Pink-eared Duck,1.000000,0.931034
+species,Malurus assimilis_Purple-backed Fairywren,1.000000,0.884615
+species,Malurus cyaneus_Superb Fairywren,0.966667,0.828571
+species,Malurus lamberti_Variegated Fairywren,1.000000,0.923077
+species,Malurus leucopterus_White-Winged Fairywren,1.000000,0.951613
+species,Malurus splendens_Spendid Fairywren,0.937500,0.937500
+species,Manorina flavigula_Yellow-Throated Miner,1.000000,0.942857
+species,Manorina melanocephala_Noisy Miner,1.000000,0.967742
+species,Manorina melanophrys_Bell Miner,0.966667,1.000000
+species,Megaloprepia magnifica_Wompoo Fruit-Dove,1.000000,1.000000
+species,Megalurus timoriensis_Tawny Grassbird,1.000000,1.000000
+species,Melanodryas cucullata_Hooded Robin,1.000000,0.964286
+species,Meliphaga lewinii_Lewin's Honeyeater,0.962264,0.962264
+species,Melithreptus brevirostris_Brown-headed Honeyeater,0.962963,0.928571
+species,Melithreptus gularis_Black-chinned Honeyeater,0.968750,0.911765
+species,Melithreptus lunatus_White-naped Honeyeater,1.000000,1.000000
+species,Melopsittacus undulatus_Budgerigar,0.983333,0.983333
+species,Menura alberti_Albert's Lyrebird,0.976744,0.913043
+species,Menura novaehollandiae_Superb Lyrebird,0.979167,0.854545
+species,Merops ornatus_Rainbow Bee-eater,1.000000,0.980392
+species,Microcarbo melanoleucos_Little Pied Cormorant,1.000000,0.920000
+species,Microeca fascinans_Jacky Winter,1.000000,1.000000
+species,Milvus migrans_Black Kite,1.000000,1.000000
+species,Mirafra javanica_Singing Bushlark,1.000000,0.958333
+species,Monarcha melanopsis_Black-faced Monarch,1.000000,0.878788
+species,Myiagra inquieta_Restless Flycatcher,1.000000,1.000000
+species,Myiagra rubecula_Leaden Flycatcher,1.000000,0.965517
+species,Myopsalta mackinlayi_Fence Buzzer,1.000000,0.888889
+species,Myzomela sanguinolenta_Scarlet Myzomela,1.000000,0.981818
+species,Neobatrachus pictus_Painted Frog,1.000000,1.000000
+species,Neobatrachus sudellae_Sudell's Frog,1.000000,1.000000
+species,Neochmia temporalis_Red-browed Finch,0.980000,0.960784
+species,Neophema chrysostoma_Blue-winged Parrot,1.000000,0.928571
+species,Neophema pulchella_Turquoise Parrot,1.000000,1.000000
+species,Neopsephotus bourkii_Bourke's Parrot,1.000000,1.000000
+species,Neosericornis citreogularis_Yellow-throated Scrubwren,1.000000,1.000000
+species,Nesoptilotis leucotis_White-eared Honeyeater,1.000000,0.833333
+species,Ninox boobook_Australian Boobook,1.000000,0.983871
+species,Ninox connivens_Barking Owl,1.000000,1.000000
+species,Ninox strenua_Powerful Owl,1.000000,1.000000
+species,Northiella haematogaster_Greater Bluebonnet,1.000000,1.000000
+species,Notaden bennettii_Crucifix Frog,1.000000,1.000000
+species,Nymphicus hollandicus_Cockatiel,0.970588,0.970588
+species,Ocyphaps lophotes_Crested Pigeon,1.000000,1.000000
+species,Oecanthus angustus_Common Tree Cricket,1.000000,1.000000
+species,Oreoica gutturalis_Crested Bellbird,1.000000,1.000000
+species,Origma solitaria_Rockwarbler,0.941176,0.800000
+species,Oriolus sagittatus_Olive-backed Oriole,0.964912,0.916667
+species,Orthonyx temminckii_Australian Logrunner,0.967742,1.000000
+species,Ovis aries_Sheep,1.000000,0.921569
+species,Pachycephala inornata_Gilberts Whistler,1.000000,1.000000
+species,Pachycephala pectoralis_Golden Whistler,0.950000,0.982759
+species,Pachycephala rufiventris_Rufous Whistler,0.983051,0.983051
+species,Palapsalta circumdata_Bronze Tree-Buzzer,0.880000,1.000000
+species,Pandion haliaetus_Osprey,1.000000,1.000000
+species,Paracrinia haswelli_Haswell's Froglet,1.000000,1.000000
+species,Pardalotus punctatus_Spotted Pardalote,1.000000,1.000000
+species,Pardalotus striatus_Striated Pardalote,1.000000,1.000000
+species,Parvipsitta pusilla_Little Lorikeet,1.000000,0.937500
+species,Passer domesticus_House Sparrow,1.000000,0.972222
+species,Pauropsalta castanea_Flinders Squawker,1.000000,1.000000
+species,Pauropsalta mneme_Alarm Clock Squawker,0.947368,0.923077
+species,Pedionomus torquatus_Plains Wanderer,0.892857,0.925926
+species,Pelodryas caerulea_Green Tree Frog,1.000000,1.000000
+species,Peltohyas australis_Inland Dotterel,1.000000,0.958333
+species,Petaurus breviceps_Sugar Glider,0.975000,0.928571
+species,Petrochelidon ariel_Fairy Martin,1.000000,1.000000
+species,Petrochelidon nigricans_Tree Martin,1.000000,0.909091
+species,Petroica boodang_Scarlet Robin,1.000000,1.000000
+species,Petroica goodenovii_Red-capped Robin,1.000000,0.975000
+species,Petroica phoenicea_Flame Robin,1.000000,1.000000
+species,Petroica rosea_Rose Robin,1.000000,1.000000
+species,Pezoporus wallicus_Ground Parrot,1.000000,0.763158
+species,Phalacrocorax carbo_Great Cormorant,1.000000,0.967742
+species,Phalacrocorax sulcirostris_Little Black Cormorant,1.000000,0.937500
+species,Phalacrocorax varius_Pied Cormorant,1.000000,1.000000
+species,Phaps chalcoptera_Common Bronzewing,0.984615,0.984615
+species,Phaps elegans_Brush Bronzewing,1.000000,0.978723
+species,Phaps histrionica_Flock Bronzewing,1.000000,0.909091
+species,Phascolarctos cinereus_Koala,1.000000,1.000000
+species,Philemon citreogularis_Little Friarbird,1.000000,1.000000
+species,Philemon corniculatus_Noisy Friarbird,1.000000,0.903846
+species,Phylidonyris niger_White-cheeked Honeyeater,1.000000,0.935484
+species,Phylidonyris novaehollandiae_New Holland Honeyeater,1.000000,0.896552
+species,Pitta versicolor_Noisy Pitta,1.000000,1.000000
+species,Platalea leucorodia_Royal Spoonbill,1.000000,0.906250
+species,Platycercus elegans_Crimson Rosella,1.000000,1.000000
+species,Platycercus eximius_Eastern Rosella,0.984127,0.984127
+species,Platyplectrum ornatum_Ornate Burrowing Frog,1.000000,1.000000
+species,Plectorhyncha lanceolata_Striped Honeyeater,1.000000,1.000000
+species,Plegadis falcinellus_Glossy Ibis,0.928571,0.962963
+species,Podargus strigoides_Tawny Frogmouth,1.000000,0.976744
+species,Polytelis swainsonii_Superb Parrot,1.000000,1.000000
+species,Pomatostomus ruficeps_Chestnut-crowned Babbler,1.000000,1.000000
+species,Pomatostomus superciliosus_White-browed Babbler,1.000000,0.761905
+species,Pomatostomus temporalis_Grey-crowned Babbler,1.000000,0.961538
+species,Poodytes gramineus_Little Grassbird,1.000000,0.967742
+species,Popplepsalta aeroides_Blue-banded Scratcher,1.000000,0.900000
+species,Popplepsalta notialis_Southern Red-eyed Squeaker,0.916667,0.647059
+species,Porphyrio melanotus_Australasian Swamphen,1.000000,0.941176
+species,Porzana fluminea_Australian Spotted Crake,0.972973,1.000000
+species,Psaltoda harrisii_Yellowbelly,1.000000,0.875000
+species,Psaltoda moerens_Redeye Cicada,1.000000,1.000000
+species,Psaltoda mossi_Little Baron,1.000000,1.000000
+species,Psaltoda pictibasis_Black Friday,1.000000,1.000000
+species,Psaltoda plaga_Black Prince,0.984615,1.000000
+species,Psephotellus varius_Mulga Parrot,0.956522,0.956522
+species,Psephotus haematonotus_Red-rumped Parrot,1.000000,0.976744
+species,Pseudocheirus peregrinus_Common Ring-tailed Possum,1.000000,0.956522
+species,Pseudophryne australis_Red-crowned Toadlet,0.941176,0.888889
+species,Pseudophryne bibroni_Bibron's Toadlet,1.000000,1.000000
+species,Pseudophryne coriacea_Red-backed Toadlet,0.978723,0.978723
+species,Pseudorhynchus lessonii_Lesson's Mimicking Snout-nose,1.000000,0.978261
+species,Pseudorhynchus mimeticus_Mimicking Snout-nose,1.000000,1.000000
+species,Psophodes cristatus_Chirruping Wedgebill,0.968254,0.968254
+species,Psophodes olivaceus_Eastern Whipbird,0.975000,0.829787
+species,Pteropus poliocephalus_Grey-headed Flying-fox,0.983333,0.983333
+species,Pteropus scapulatus_Little Red Flying-fox,1.000000,0.705882
+species,Ptilinopus regina_Rose-crowned Fruit-Dove,0.909091,0.909091
+species,Ptilonorhynchus violaceus_Satin Bowerbird,1.000000,0.977273
+species,Ptilotula fusca_Fuscous Honeyeater,0.962963,0.838710
+species,Ptilotula ornata_Yellow-plumed Honeyeater,1.000000,0.925926
+species,Ptilotula penicillata_White-plumed Honeyeater,0.983333,1.000000
+species,Ptilotula plumula_Grey-fronted Honeyeater,1.000000,1.000000
+species,Purnella albifrons_White-fronted Honeyeater,1.000000,1.000000
+species,Pycnonotus jocosus_Red-whiskered Bulbul,1.000000,0.971429
+species,Pycnoptilus floccosus_Pilotbird,1.000000,1.000000
+species,Pyrrholaemus brunneus_Redthroat,0.952381,0.909091
+species,Pyrrholaemus sagittatus_Speckled Warbler,1.000000,0.960000
+species,Recurvirostra novaehollandiae_Red-necked Avocet,1.000000,1.000000
+species,Rhipidura albiscapa_Grey Fantail,0.983333,0.951613
+species,Rhipidura leucophrys_Willie-wagtail,0.961538,0.980392
+species,Rhipidura rufifrons_Rufous Fantail,1.000000,0.903226
+species,Scythrops novaehollandiae_Channel-billed Cuckoo,1.000000,1.000000
+species,Sericornis frontalis_White-browed Scrubwren,0.984375,0.969231
+species,Sericornis magnirostra_Large-billed Scrubwren,1.000000,1.000000
+species,Sericulus chrysocephalus_Regent Bowerbird,0.852941,0.906250
+species,Smicrornis brevirostris_Weebill,0.975610,1.000000
+species,Sphecotheres vieilloti_Australasian Figbird,1.000000,0.916667
+species,Spilopelia chinensis_Spotted Dove,0.968750,0.968750
+species,Stagonopleura guttata_Diamond Firetail,1.000000,0.809524
+species,Stizoptera bichenovii_Double-barred Finch,1.000000,0.925926
+species,Strepera graculina_Pied Currawong,1.000000,0.964912
+species,Strepera versicolor_Gray Currawong,1.000000,1.000000
+species,Struthidea cinerea_Apostlebird,1.000000,0.952381
+species,Sturnus vulgaris_Common Starling,1.000000,0.973684
+species,Sugomel nigrum_Black Honeyeater,1.000000,1.000000
+species,Synoicus chinensis_King Quail,1.000000,0.882353
+species,Synoicus ypsilophorus_Brown Quail,1.000000,1.000000
+species,Tachybaptus novaehollandiae_Australasian Grebe,1.000000,1.000000
+species,Tachyspiza cirrocephala_Collared Sparrowhawk,1.000000,0.903226
+species,Tachyspiza fasciata_Brown Goshawk,0.968750,0.885714
+species,Tachyspiza novaehollandiae_Grey Goshawk,0.961538,0.961538
+species,Taeniopygia castanotis_Zebra Finch,0.969697,1.000000
+species,Tamasa tristigma_Brown Bunyip,1.000000,1.000000
+species,Teleogryllus commodus_Black Field Cricket,1.000000,1.000000
+species,Telmapsalta hackeri_Paperbark Cicada,0.966667,0.935484
+species,Thinornis melanops_Black-fronted Dotterel,1.000000,1.000000
+species,Thopha saccata_Eastern Double Drummer,1.000000,1.000000
+species,Threskiornis molucca_Australian Ibis,0.970588,0.942857
+species,Threskiornis spinicollis_Straw-necked Ibis,1.000000,0.772727
+species,Todiramphus pyrrhopygius_Red-backed Kingfisher,1.000000,1.000000
+species,Todiramphus sanctus_Sacred Kingfisher,0.983871,0.983871
+species,Tribonyx ventralis_Black-tailed Nativehen,1.000000,0.538462
+species,Trichoglossus chlorolepidotus_Scaly-breasted Lorikeet,1.000000,1.000000
+species,Trichoglossus moluccanus_Rainbow Lorikeet,0.975610,0.975610
+species,Trichosurus vulpecula_Common Brushtail Possum,1.000000,0.984375
+species,Turdus merula_Common Blackbird,1.000000,1.000000
+species,Turnix maculosus_Red-backed Buttonquail,1.000000,0.777778
+species,Turnix varius_Painted Buttonquail,0.970588,0.942857
+species,Turnix velox_Little Buttonquail,0.909091,0.877193
+species,Tyto javanica_Eastern Barn Owl,0.937500,0.978261
+species,Tyto longimembris_Australasian Grass-Owl,1.000000,0.962963
+species,Tyto novaehollandiae_Australian Masked Owl,1.000000,0.939394
+species,Tyto tenebricosa_Sooty Owl,1.000000,1.000000
+species,Uperoleia rugosa_Wrinkled Toadlet,1.000000,1.000000
+species,Vanellus miles_Masked Lapwing,1.000000,0.956522
+species,Vanellus tricolor_Banded Lapwing,1.000000,0.983871
+species,Vulpes vulpes_Red Fox,0.964286,0.900000
+species,Yoyetta celis_Silver Princess,1.000000,0.894737
+species,Yoyetta cumberlandi_Cumberland Ambertail,0.954545,0.700000
+species,Yoyetta humphreyae_Varied Ambertail,0.875000,1.000000
+species,Yoyetta repetens_Zipping Ambertail,0.935484,1.000000
+species,Zapornia pusilla_Baillon's Crake,0.962963,1.000000
+species,Zapornia tabuensis_Spotless Crake,1.000000,0.939394
+species,Zoothera lunulata_Bassian Thrush,1.000000,1.000000
+species,Zosterops lateralis_Silvereye,1.000000,0.931818
