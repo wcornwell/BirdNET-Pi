@@ -154,8 +154,11 @@ if (isset($_GET["max_files_species"])) {
 }
 	
   if(isset($_GET["privacy_threshold"])) {
-    $privacy_threshold = $_GET["privacy_threshold"];
-    if(strcmp($privacy_threshold,$config['PRIVACY_THRESHOLD']) !== 0) {
+    $privacy_threshold = intval($_GET["privacy_threshold"]);
+    // Clamp to sensible range (0 = off, 100 = check all labels)
+    $privacy_threshold = max(0, min(100, $privacy_threshold));
+
+    if(strcmp((string)$privacy_threshold, $config['PRIVACY_THRESHOLD']) !== 0) {
       $contents = preg_replace("/PRIVACY_THRESHOLD=.*/", "PRIVACY_THRESHOLD=$privacy_threshold", $contents);
     }
   }
@@ -296,7 +299,7 @@ $newconfig = get_config();
       <table class="settingstable"><tr><td>
       <h2>Privacy Threshold</h2>
       <div class="slidecontainer">
-        <input name="privacy_threshold" type="range" min="0" max="3" value="<?php print($newconfig['PRIVACY_THRESHOLD']);?>" class="slider" id="privacy_threshold">
+        <input name="privacy_threshold" type="range" min="0" max="100" value="<?php print($newconfig['PRIVACY_THRESHOLD']);?>" class="slider" id="privacy_threshold">
         <p>Value: <span id="threshold_value"></span>%</p>
       </div>
       <script>
@@ -310,7 +313,12 @@ $newconfig = get_config();
         document.getElementById("predictionCount").innerHTML = parseInt(this.value);
       }
       </script>
-      <p>If a human or sensitive sound (Engine, Siren, <i>Homo sapiens</i>, etc.) is predicted anywhere among the top <span id="predictionCount"><?php echo intval($newconfig['PRIVACY_THRESHOLD']); ?></span> predictions, the sample will be considered of human origin and no data will be collected. This filter also works for custom classifiers by detecting sensitive scientific names. Start with 1% and move up as needed.</p>
+      <p>If a human or sensitive sound (Engine, Siren, <i>Homo sapiens</i>, etc.) is predicted within the top N predictions, the sample will be considered of human origin and no data will be collected.</p>
+      <ul>
+        <li><strong>0</strong> = off</li>
+        <li><strong>1–100</strong> = top N predictions (use smaller values to make the filter stricter)</li>
+      </ul>
+      <p>This also works for custom classifiers by detecting sensitive scientific names.</p>
       </td></tr></table><br>
       
       <table class="settingstable"><tr><td>

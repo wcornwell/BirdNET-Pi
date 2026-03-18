@@ -221,10 +221,20 @@ CHANNELS=2
 
 ## PRIVACY_THRESHOLD can be set to enable sensitivity to Human sounds. This
 ## setting is an effort to introduce privacy into the data collection.
-## The PRIVACY_THRESHOLD value represents a percentage of the entire species
-## list used during analysis. If a human sound is predicted anywhere within
-## the precentile set below, no data is collected for that audio chunk.
-## Valid range: 0-3
+##
+## PRIVACY_THRESHOLD value controls how sensitive the filter is to human/sensitive
+## labels in the model output. It works for models with any number of labels
+## (from 2 to 15,000+), and is interpreted as follows:
+##
+##   0  => disabled (do not filter)
+## 1-100 => check the top N predictions (absolute rank)
+##
+## Example:
+##   1  => only the top prediction is checked
+## 10 => top 10 predictions are checked
+## 50 => top 50 predictions are checked
+##
+## Valid range: 0-100
 
 PRIVACY_THRESHOLD=0
 

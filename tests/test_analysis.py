@@ -109,10 +109,10 @@ class TestFilterHumans(unittest.TestCase):
         mock_load_settings.return_value = settings
 
         expected = [
-            [('Human', 0.95)],
+            [('Human', 0.0)],
             [('Bird_A', 0.9), ('Bird_B', 0.8)],
             [('Bird_C', 0.9), ('Bird_D', 0.8)],
-            [('Human vocal_Human vocal', 0.9)]
+            [('Human', 0.0)]
         ]
 
         # Run filter_humans
@@ -141,7 +141,7 @@ class TestFilterHumans(unittest.TestCase):
         expected = [
             [('Bird_A', 0.9), ('Bird_B', 0.8)],
             [('Bird_D', 0.9), ('Bird_E', 0.8)],
-            [('Human_Human', 0.95)],
+            [('Human', 0.0)],
             [('Bird_F', 0.6), ('Bird_G', 0.5)]
         ]
 
@@ -228,7 +228,7 @@ class TestFilterHumans(unittest.TestCase):
 
         expected = [
             [('Bird_A', 0.9)],
-            [('Homo sapiens', 0.95)],
+            [('Human', 0.0)],
             [('Bird_C', 0.7)]
         ]
 
@@ -243,23 +243,56 @@ class TestPrivacyThresholdScaling(unittest.TestCase):
 
     @patch('scripts.utils.helpers._load_settings')
     def test_threshold_scaling(self, mock_load_settings):
-        # 5% threshold => check top 5
+        # 5 => check top 5 predictions (absolute rank)
         settings = Settings.with_defaults()
         settings['PRIVACY_THRESHOLD'] = 5
         mock_load_settings.return_value = settings
 
-        # Human at rank 5
-        detections = [
-            [('Bird_1', 0.9), ('Bird_2', 0.8), ('Bird_3', 0.7), ('Bird_4', 0.6), ('Human', 0.5)],
-            [('Bird_1', 0.9), ('Bird_2', 0.8), ('Bird_3', 0.7), ('Bird_4', 0.6), ('Bird_5', 0.5), ('Human', 0.4)]
-        ]
+        # Build a 10-label prediction list (descending confidence)
+        base = [(f'Bird_{i}', 1.0 - i * 0.01) for i in range(10)]
 
-        # First chunk: Human at rank 5, should be masked
-        # Second chunk: Human at rank 6, should NOT be masked
+        # Human at rank 5 (index 4) should be masked.
+        chunk_with_human_rank_5 = base.copy()
+        chunk_with_human_rank_5[4] = ('Human', 0.5)
+
+        # Human at rank 6 (index 5) should NOT be masked (outside top 5)
+        chunk_with_human_rank_6 = base.copy()
+        chunk_with_human_rank_6[5] = ('Human', 0.4)
+
+        detections = [chunk_with_human_rank_5, chunk_with_human_rank_6]
+
         result = filter_humans(detections)
 
-        self.assertEqual(result[0], [('Human', 0.5)])
-        self.assertEqual(result[1][:5], [('Bird_1', 0.9), ('Bird_2', 0.8), ('Bird_3', 0.7), ('Bird_4', 0.6), ('Bird_5', 0.5)])
+        self.assertEqual(result[0], [('Human', 0.0)])
+        self.assertEqual(result[1][5], ('Human', 0.4))
+
+    @patch('scripts.utils.helpers._load_settings')
+    def test_threshold_scaling_small_label_set(self, mock_load_settings):
+        # Threshold=1 should always check just the top label (even on huge models)
+        settings = Settings.with_defaults()
+        settings['PRIVACY_THRESHOLD'] = 1
+        mock_load_settings.return_value = settings
+
+        # 14k labels - human is in position 2 (should still be masked, only top 1 checked)
+        detections = [[('Bird_0', 0.9), ('Human', 0.8)] + [(f'Bird_{i}', 0.1) for i in range(2, 14000)]]
+
+        result = filter_humans(detections)
+        self.assertEqual(result, [[('Bird_0', 0.9), ('Human', 0.8)]])
+
+    @patch('scripts.utils.helpers._load_settings')
+    def test_threshold_scaling_top_n_clamp(self, mock_load_settings):
+        # Threshold should clamp at the model's label count (not exceed it).
+        settings = Settings.with_defaults()
+        settings['PRIVACY_THRESHOLD'] = 500
+        mock_load_settings.return_value = settings
+
+        # Only 100 labels exist; human at rank 50 should be masked when threshold=500
+        base = [(f'Bird_{i}', 1.0 - i * 0.01) for i in range(100)]
+        base[49] = ('Human', 0.5)
+        detections = [base]
+
+        result = filter_humans(detections)
+        self.assertEqual(result, [[('Human', 0.0)]])
 
 
 if __name__ == '__main__':
