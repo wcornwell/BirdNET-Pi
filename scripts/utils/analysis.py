@@ -111,9 +111,20 @@ def filter_humans(predictions, human_names=None):
     if priv_thresh == 0.0:
         return predictions
 
-    # Less extreme cutoff: 1% = top 1 result, 5% = top 5 results, etc.
-    human_cutoff = max(1, int(priv_thresh))
-    log.debug("HUMAN-CUTOFF AT RANK: %d", human_cutoff)
+    # Interpret PRIVACY_THRESHOLD as an absolute rank (top N predictions).
+    # This is simpler, transparent, and works consistently across small and
+    # large models.
+    human_cutoff = 1
+    if len(predictions) > 0:
+        label_count = len(predictions[0])
+        human_cutoff = max(1, int(priv_thresh))
+        human_cutoff = min(human_cutoff, label_count)
+
+        log.debug("HUMAN-CUTOFF AT RANK: %d (top %d of %d labels)",
+                  human_cutoff,
+                  human_cutoff,
+                  label_count)
+
     try:
         if conf.getint('EXTRACTION_LENGTH') > 9:
             log.warning("EXTRACTION_LENGTH is set to %d. Privacy filter might miss human sound, "
@@ -128,15 +139,30 @@ def filter_humans(predictions, human_names=None):
     human_mask = [False] * len(predictions)
     human_labels = [None] * len(predictions)
     for i, prediction in enumerate(predictions):
-        for rank, p in enumerate(prediction[:human_cutoff], 1):
-            # Check if label contains privacy keywords or is in the human_names set
+        human_rank = None
+        human_pred = None
+
+        # First, search for the earliest human-related label in the list.
+        for rank, p in enumerate(prediction, 1):
             label_name = p[0].lower()
             privacy_keywords = ['human', 'homo sapiens', 'engine', 'siren', 'noise', 'screech', 'whistle']
             if any(key in label_name for key in privacy_keywords) or p[0] in human_names:
-                log.info('Privacy filter ACTIVE: Human/Sensitive sound detected at rank %d (confidence: %s, label: %s)', rank, p[1], p[0])
-                human_mask[i] = True
-                human_labels[i] = p
+                human_rank = rank
+                human_pred = p
                 break
+
+        if human_rank is None:
+            continue
+
+        # If the human label is within the allowed cutoff, mask the chunk.
+        if human_rank <= human_cutoff:
+            log.info('Privacy filter ACTIVE: Human/Sensitive sound detected at rank %d (confidence: %s, label: %s) - masking chunk',
+                     human_rank, human_pred[1], human_pred[0])
+            human_mask[i] = True
+            human_labels[i] = human_pred
+        else:
+            log.debug('Privacy filter: Human/Sensitive sound detected at rank %d (cutoff %d) - NOT masking',
+                      human_rank, human_cutoff)
 
     # Neighbor filtering disabled for now per user request
     human_neighbour_mask = [False] * len(predictions)
