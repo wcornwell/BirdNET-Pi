@@ -193,8 +193,9 @@ while($results=$result3->fetchArray(SQLITE3_ASSOC)){
     <input type="hidden" name="view" value="Species Stats">
     <table>
 <?php
+$result2 = fetch_species_array($_GET['sort']);
 $excludelines = [];
-while($results=$result->fetchArray(SQLITE3_ASSOC))
+while($results=$result2->fetchArray(SQLITE3_ASSOC))
 {
 $comname = preg_replace('/ /', '_', $results['Com_Name']);
 $comname = preg_replace('/\'/', '', $comname);
