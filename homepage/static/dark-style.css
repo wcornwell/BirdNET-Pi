@@ -31,6 +31,7 @@ iframe {
   width: 100%;
   position: fixed;
   background-color: grey;
+  top: 7%;
 }
 
 body {
@@ -572,7 +573,7 @@ button:hover {
     height: 60px;
     filter: drop-shadow(0px 0px 20px rgba(255, 255, 255, 1.0));
   }
-  .topnav.responsive {position: relative;}
+  .topnav.responsive {position: relative; overflow-y: auto; max-height: 85vh; -webkit-overflow-scrolling: touch;}
   .topnav.responsive button {
     display: block;
     text-align: center;
@@ -637,7 +638,7 @@ button:hover {
     margin-left: auto;
     margin-right: auto;
   }
-  .topnav.responsive {position: relative;}
+  .topnav.responsive {position: relative; overflow-y: auto; max-height: 85vh; -webkit-overflow-scrolling: touch;}
   .topnav.responsive button {
     display: block;
   }
