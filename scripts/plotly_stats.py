@@ -28,7 +28,7 @@ if profile:
         profiler.start()
 
 
-pio.templates.default = "plotly_white"
+pio.templates.default = "plotly_dark"
 
 userDir = os.path.expanduser('~')
 URI_SQLITE_DB = userDir + '/BirdNET-Pi/scripts/birds.db'
@@ -281,7 +281,7 @@ if daily is False:
 
             # Plot seen species for selected date range and number of species
 
-            fig.add_trace(go.Bar(y=top_N_species.index.tolist(), x=top_N_species.values.tolist(), orientation='h', marker_color='seagreen'), row=1, col=1)
+            fig.add_trace(go.Bar(y=top_N_species.index.tolist(), x=top_N_species.values.tolist(), orientation='h', marker_color='mediumspringgreen'), row=1, col=1)
 
             fig.update_layout(
                 margin=dict(l=0, r=0, t=50, b=0),
@@ -298,7 +298,7 @@ if daily is False:
             d = pd.DataFrame(np.zeros((24, 1))).squeeze()
             detections = hourly.loc[specie]
             detections = (d + detections).fillna(0)
-            fig.add_trace(go.Barpolar(r=detections.tolist(), theta=theta, marker_color='seagreen'), row=1, col=2)
+            fig.add_trace(go.Barpolar(r=detections.tolist(), theta=theta, marker_color='mediumspringgreen'), row=1, col=2)
             fig.update_layout(
                 autosize=False,
                 width=1000,
@@ -326,7 +326,7 @@ if daily is False:
             )
 
             daily = pd.crosstab(df5, df5.index.date, dropna=True, margins=True)
-            fig.add_trace(go.Bar(x=daily.columns[:-1].tolist(), y=daily.loc[specie][:-1].tolist(), marker_color='seagreen'), row=3, col=2)
+            fig.add_trace(go.Bar(x=daily.columns[:-1].tolist(), y=daily.loc[specie][:-1].tolist(), marker_color='mediumspringgreen'), row=3, col=2)
             st.plotly_chart(fig, use_container_width=True)  # , config=config)
 
         else:
@@ -347,7 +347,7 @@ if daily is False:
                 d = pd.DataFrame(np.zeros((24, 1))).squeeze()
                 detections = hourly.loc[specie]
                 detections = (d + detections).fillna(0)
-                fig.add_trace(go.Barpolar(r=detections.tolist(), theta=theta, marker_color='seagreen'), row=1, col=1)
+                fig.add_trace(go.Barpolar(r=detections.tolist(), theta=theta, marker_color='mediumspringgreen'), row=1, col=1)
                 fig.update_layout(
                     autosize=False,
                     width=1000,
@@ -375,7 +375,7 @@ if daily is False:
                 )
 
                 daily = pd.crosstab(df5, df5.index.date, dropna=True, margins=True)
-                fig.add_trace(go.Bar(x=daily.columns[:-1].tolist(), y=daily.loc[specie][:-1].tolist(), marker_color='seagreen'), row=3, col=1)
+                fig.add_trace(go.Bar(x=daily.columns[:-1].tolist(), y=daily.loc[specie][:-1].tolist(), marker_color='mediumspringgreen'), row=3, col=1)
                 st.plotly_chart(fig, use_container_width=True)  # , config=config)
                 df_counts = int(hourly[hourly.index == specie]['All'].iloc[0])
                 st.subheader('Total Detect:' + str('{:,}'.format(df_counts))
@@ -465,7 +465,7 @@ else:
 
     plt_topN_today = (df6['Com_Name'].value_counts()[:readings])
     freq_order = pd.value_counts(df6['Com_Name']).iloc[:readings].index
-    fig.add_trace(go.Bar(y=plt_topN_today.index.tolist(), x=plt_topN_today.values.tolist(), marker_color='seagreen', orientation='h'), row=1,
+    fig.add_trace(go.Bar(y=plt_topN_today.index.tolist(), x=plt_topN_today.values.tolist(), marker_color='mediumspringgreen', orientation='h'), row=1,
                   col=1)
 
     df6['Hour of Day'] = [r.hour for r in df6.index.time]
@@ -487,12 +487,14 @@ else:
     labels[labels == '0'] = ""
     fig.add_trace(go.Heatmap(x=heat.columns.tolist(), y=heat.index.tolist(), z=heat_values_normalized,  # heat.values,
                              showscale=False,
-                             text=labels, texttemplate="%{text}", colorscale='Blugrn'
+                             text=labels, texttemplate="%{text}", colorscale='Teal'
                              ), row=1, col=2)
     fig.update_yaxes(visible=True, autorange="reversed", ticks="inside", tickson="boundaries", ticklen=10000,
                      showgrid=True)
     fig.update_layout(xaxis_ticks="inside",
-                      margin=dict(l=0, r=0, t=50, b=0))
+                      margin=dict(l=0, r=0, t=50, b=0),
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)')
     st.plotly_chart(fig, use_container_width=True)  # , config=config)
 
 if profile:
