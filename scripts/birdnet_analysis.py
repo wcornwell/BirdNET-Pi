@@ -15,7 +15,7 @@ from utils.analysis import load_global_model, run_analysis
 from utils.helpers import get_settings, get_wav_files, ANALYZING_NOW
 from utils.classes import ParseFileName
 from utils.reporting import extract_detection, summary, write_to_file, write_to_db, apprise, bird_weather, heartbeat, \
-    update_json_file
+    update_json_file, migrate_db
 
 shutdown = False
 
@@ -29,6 +29,7 @@ def sig_handler(sig_num, curr_stack_frame):
 
 
 def main():
+    migrate_db()
     load_global_model()
     conf = get_settings()
     i = inotify.adapters.Inotify()

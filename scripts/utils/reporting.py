@@ -87,6 +87,17 @@ def extract_detection(file: ParseFileName, detection: Detection):
     return new_file
 
 
+def migrate_db():
+    con = sqlite3.connect(DB_PATH)
+    cur = con.cursor()
+    existing = {row[1] for row in cur.execute("PRAGMA table_info(detections)")}
+    if 'Model_Name' not in existing:
+        cur.execute("ALTER TABLE detections ADD COLUMN Model_Name VARCHAR(100)")
+        con.commit()
+        log.info("Migrated detections table: added Model_Name column")
+    con.close()
+
+
 def write_to_db(file: ParseFileName, detection: Detection):
     conf = get_settings()
     # Connect to SQLite Database
@@ -94,13 +105,13 @@ def write_to_db(file: ParseFileName, detection: Detection):
         try:
             con = sqlite3.connect(DB_PATH)
             cur = con.cursor()
-            cur.execute("INSERT INTO detections VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            cur.execute("INSERT INTO detections VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                         (detection.date, detection.time, detection.scientific_name, detection.common_name, detection.confidence,
                          conf['LATITUDE'], conf['LONGITUDE'], conf['CONFIDENCE'], str(detection.week), conf['SENSITIVITY'],
-                         conf['OVERLAP'], os.path.basename(detection.file_name_extr)))
+                         conf['OVERLAP'], os.path.basename(detection.file_name_extr), conf['MODEL']))
             # (Date, Time, Sci_Name, Com_Name, str(score),
             # Lat, Lon, Cutoff, Week, Sens,
-            # Overlap, File_Name))
+            # Overlap, File_Name, Model_Name)
 
             con.commit()
             con.close()
