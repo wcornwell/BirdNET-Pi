@@ -177,7 +177,15 @@ def filter_humans(predictions, human_names=None):
             # This ensures it is logged as 'Human' but NOT saved to the database as a confident detection.
             prediction = [('Human', 0.0)]
         else:
-            prediction = prediction[:10]
+            # Strip privacy-sensitive entries from non-masked chunks.
+            # A chunk may not trigger full masking (human found beyond cutoff)
+            # but still contain human-related labels at lower ranks that must
+            # not be saved to the database. Check by sci_name (part before '_')
+            # to handle both "Homo sapiens_Human Voice" and bare labels.
+            prediction = [
+                p for p in prediction[:10]
+                if p[0].split('_')[0] not in human_names
+            ]
         clean_detections.append(prediction)
 
     return clean_detections
