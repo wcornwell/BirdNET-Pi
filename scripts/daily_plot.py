@@ -45,10 +45,11 @@ def show_values_on_bars(ax, label):
         # value = '{:.0%}'.format(label.iloc[i])
         # Species Count Total
         value = '{:n}'.format(p.get_width())
-        bbox = {'facecolor': 'lightgrey', 'edgecolor': 'none', 'pad': 1.0}
         if conf['COLOR_SCHEME'] == "dark":
-            color = 'black'
+            bbox = {'facecolor': '#333333', 'edgecolor': 'none', 'pad': 1.0}
+            color = 'white'
         else:
+            bbox = {'facecolor': 'lightgrey', 'edgecolor': 'none', 'pad': 1.0}
             color = 'darkgreen'
 
         ax.text(x, y, value, bbox=bbox, ha='center', va='center', size=9, color=color)
@@ -102,8 +103,8 @@ def create_plot(df_plt_today, now, is_top=None):
     if is_top or is_top is None:
         # Set Palette for graphics
         if conf['COLOR_SCHEME'] == "dark":
-            pal = "Greys"
-            colors = plt.cm.Greys(norm(confmax)).tolist()
+            pal = "Blues"
+            colors = plt.cm.Blues(norm(confmax)).tolist()
         else:
             pal = "Greens"
             colors = plt.cm.Greens(norm(confmax)).tolist()
@@ -158,7 +159,7 @@ def create_plot(df_plt_today, now, is_top=None):
     for label in plot.get_xticklabels():
         if int(label.get_text()) == now.hour:
             if conf['COLOR_SCHEME'] == "dark":
-                label.set_color('white')
+                label.set_color('cyan')
             else:
                 label.set_color('yellow')
 
@@ -180,7 +181,6 @@ def create_plot(df_plt_today, now, is_top=None):
     # Save combined plot
     save_name = os.path.expanduser(f"~/BirdSongs/Extracted/Charts/{name}-{now.strftime('%Y-%m-%d')}.png")
     plt.savefig(save_name)
-    plt.show()
     plt.close()
 
 
