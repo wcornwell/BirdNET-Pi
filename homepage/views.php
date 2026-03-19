@@ -168,6 +168,7 @@ if(isset($_GET['view'])){
       <button type=\"submit\" name=\"view\" value=\"System Controls\" form=\"views\">System Controls".$updatediv."</button>
       <button type=\"submit\" name=\"view\" value=\"Services\" form=\"views\">Services</button>
       <button type=\"submit\" name=\"view\" value=\"File\" form=\"views\">File Manager</button>
+      <button type=\"submit\" name=\"view\" value=\"Export\" form=\"views\">Export CSV</button>
       <button type=\"submit\" name=\"view\" value=\"Adminer\" form=\"views\">Database Maintenance</button>
       <button type=\"submit\" name=\"view\" value=\"Webterm\" form=\"views\">Web Terminal</button>
       <button type=\"submit\" name=\"view\" value=\"Included\" form=\"views\">Custom Species List</button>
@@ -210,6 +211,10 @@ if(isset($_GET['view'])){
   }
   if($_GET['view'] == "File"){
     echo "<iframe src='scripts/filemanager/filemanager.php'></iframe>";
+  }
+  if($_GET['view'] == "Export"){
+    ensure_authenticated();
+    include('scripts/export.php');
   }
   if($_GET['view'] == "Adminer"){
     echo "<iframe src='scripts/adminer.php'></iframe>";
