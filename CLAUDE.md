@@ -39,5 +39,25 @@ are already identical, and stages the rest. It never pushes. Then commit, push, 
 chosen in the web UI under Tools → Settings. A model needs its `_Labels.txt` beside it or
 it will not load (`scripts/utils/helpers.py`, `scripts/utils/models.py`).
 
-Each vendored model is ~37 MB and stays in git history permanently — see the open
-question about pruning in `../ECOACOUSTICS.md`.
+Each vendored model is ~37 MB, so `recognizers/` keeps only two and the sync prunes the
+rest. Two is the number because it is current + rollback: as of 2026-08-02 the Pi runs
+`run0-2-bn` with `run0-3-bn` standing by.
+
+## Rewriting history here — read first
+
+The old recognizers were stripped from history on 2026-08-02 (454 MB → 278 MB). If you
+are ever tempted to do that again, know this: **`git filter-repo` rewrites every commit
+SHA in this repo**, not only commits touching the paths you remove. A no-op run — removing
+a path that exists nowhere — still produces a different root commit. Because this is a
+fork, that severs SHA continuity with `upstream`, and `git merge upstream/main` starts
+reporting "unrelated histories" with thousands of commits behind.
+
+Verifying that the paths you strip are fork-only does **not** prevent this; the paths are
+irrelevant to it. The repair, which costs nothing and changes no file:
+
+```bash
+git merge -s ours --allow-unrelated-histories upstream/main
+```
+
+That records upstream as merged with our tree untouched, and normal merges work again.
+Commit `ccfba376` is exactly that repair.
