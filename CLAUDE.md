@@ -40,8 +40,8 @@ chosen in the web UI under Tools → Settings. A model needs its `_Labels.txt` b
 it will not load (`scripts/utils/helpers.py`, `scripts/utils/models.py`).
 
 Each vendored model is ~37 MB, so `recognizers/` keeps only two and the sync prunes the
-rest. Two is the number because it is current + rollback: as of 2026-08-02 the Pi runs
-`run0-2-bn` with `run0-3-bn` standing by.
+rest. Two is the number because it is current + rollback: as of 2026-08-21 the Pi runs
+`run0-7-bn` with `run0-8-bn` standing by.
 
 ## Rewriting history here — read first
 
