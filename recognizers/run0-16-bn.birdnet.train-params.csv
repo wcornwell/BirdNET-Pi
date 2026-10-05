@@ -1,0 +1,32 @@
+﻿Parameter,Value
+Classifier name,run0-16-bn
+Model formats,tflite
+Model save mode,replace
+Bandpass filter minimum,0
+Bandpass filter maximum,15000
+Audio speed,1.0
+Crop mode,center
+Crop overlap,0.0
+Autotune,False
+Autotune trials,50
+Autotune folds,1
+Autotune repeats,1
+Epochs,50
+Batch size,32
+Learning rate,0.0001
+Hidden units,2048
+Dropout,0.25
+Weight decay,0.004
+Use label smoothing,False
+Use mixup,False
+Use focal loss,True
+Focal loss gamma,2.0
+Focal loss alpha,0.25
+Upsampling mode,repeat
+Upsampling ratio,0.4
+Non-event prefixes,"Environment_, Homo sapiens_"
+Non-event keep classes,
+Species list,
+Species list entries,0
+Unlisted handling,
+BirdNET model version,2.4
