@@ -59,7 +59,7 @@ Two things that look wrong and are not, so nobody "fixes" them:
   file by two names. `tools/sync_recognizer.sh` reads the in-repo path, and its
   refuse-to-prune-the-active-model check works.
 - Pruning `recognizers/` bounds the **checkout**, not the repository. See "Rewriting
-  history" for what that costs.
+  history" for what that costs and `tools/strip_old_recognizers.sh` for the fix.
 
 ## Never re-clone on the Pi
 
@@ -105,25 +105,31 @@ Commit `ccfba376` is exactly that repair. `filter-repo` also drops remotes, so `
 must be re-added before the repair can run. Confirm ancestry survived with
 `git rev-list --count main..upstream/main`, which should report `0`.
 
-**That strip was a one-off and it did not stop the growth.** Every model ever committed is
-still in history, because pruning `recognizers/` only changes the checkout — so the repo
-gains a model's worth (~32 MB) per deploy, permanently, and was back above its
-pre-strip size within a month. To see the damage now:
+**Decision (2026-10-08): keep committing the `.tflite`, strip superseded ones periodically.**
+Committing the model is how the newest recognizer reaches the Pi, so the growth is
+accepted and bounded by a periodic strip instead. Every model ever committed stays in
+history until stripped, because pruning `recognizers/` only changes the checkout — about
+35 MB per deploy. The first strip (2026-08-02) was a one-off and the repo was back above
+its pre-strip size within a month.
 
 ```bash
-du -sh .git
-git rev-list --objects --all | grep 'recognizers/.*\.tflite$'
+./tools/strip_old_recognizers.sh             # report: what goes, how much it saves
+./tools/strip_old_recognizers.sh --execute   # rewrite history in this clone; never pushes
 ```
 
-Do **not** strip the remaining bulk: `model/*.tflite` and the two `tflite_runtime` wheels
-are upstream's files, and stripping upstream paths is precisely what severs ancestry.
-Stripping superseded recognizers is safe but buys only a few deploys' worth of headroom.
+It keeps whatever is in `recognizers/` at HEAD and strips every other `recognizers/` path
+from history, then does the `merge -s ours` repair above and checks
+`main..upstream/main` is `0`. It writes a backup bundle first and prints the force-push and
+Pi commands without running them. Tested on a clone: 824 MB → 344 MB, tree byte-identical.
 
-**Open question, not yet decided.** The premise for vendoring 32 MB binaries in git is
-that the Pi cannot reach OneDrive. That weakened when Tailscale made the device directly
-reachable. Committing only the labels and provenance CSVs (~60 KB) while the `.tflite`
-travels by `scp` would end the growth for good and keep git as the provenance record. It
-changes the deploy contract, so decide it deliberately rather than drifting into it.
+Run it when `du -sh .git` passes ~600 MB, or after a batch of deploys. Finishing is
+manual and ordered: back up `birds.db` and `birdnet.conf` off the Pi, `git push
+--force-with-lease origin main`, then reset the Pi **in place** ("Never re-clone on the
+Pi"). Anyone else with a clone must re-clone or reset too.
+
+Do **not** strip the remaining bulk: `model/*.tflite` and the two `tflite_runtime` wheels
+are upstream's files, and stripping upstream paths is precisely what severs ancestry. The
+script only ever touches `recognizers/`.
 
 ## Frameworks evaluated
 
