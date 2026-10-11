@@ -1,5 +1,5 @@
 ﻿Parameter,Value
-Classifier name,run0-15-bn
+Classifier name,run0-17-bn
 Model formats,tflite
 Model save mode,replace
 Bandpass filter minimum,0

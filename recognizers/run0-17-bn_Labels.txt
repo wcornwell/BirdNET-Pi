@@ -14,6 +14,7 @@ Adelotus brevis_Tusked Frog
 Aegotheles cristatus_Australian Owlet Nightjar
 Ailuroedus crassirostris_Green Catbird
 Alauda arvensis_Eurasian Skylark
+Alectura lathami_Australian Brushturkey
 Aleeta curvicosta_Floury Baker
 Alisterus scapularis_Australian King-Parrot
 Amytornis barbatus_Grey Grasswren
@@ -39,6 +40,7 @@ Ardea alba_Great Egret
 Ardea coromanda_Eastern Cattle Egret
 Ardea pacifica_White-necked Heron
 Ardea plumifera_Plumed Egret
+Ardeotis australis_Australian Bustard
 Artamus cinereus_Black-faced Woodswallow
 Artamus cyanopterus_Dusky Woodswallow
 Artamus leucorynchus_White-breasted Woodswallow
@@ -50,6 +52,7 @@ Ashbyia lovensis_Gibberbird
 Atrapsalta collina_Sandstone Squeaker
 Atrapsalta corticina_Bark Squeaker
 Atrapsalta encaustica_Black Squeaker
+Atrichornis rufescens_Rufous Scrub-bird
 Auscala spinosa_Creaking Branch Cicada
 Austronomus australis_White-striped Free-tailed Bat
 Austrosalomona falcata_Olive-green Coastal Katydid
@@ -57,6 +60,7 @@ Aviceda subcristata_Pacific Baza
 Aythya australis_Hardhead
 Barnardius zonarius_Australian Ringneck
 Birrima castanea_Red Tree-ticker
+Birrima varians_Black Tree-ticker
 Biziura lobata_Musk Duck
 Bos taurus_Cattle
 Botaurus dubius_Australian Little Bittern
@@ -90,7 +94,9 @@ Chalcites osculans_Black-eared Cuckoo
 Chalcophaps longirostris_Pacific Emerald Dove
 Chenonetta jubata_Australian Wood Duck
 Cheramoeca leucosterna_White-backed Swallow
+Chlamydera maculata_Spotted Bowerbird
 Chlidonias hybrida_Whiskered Tern
+Chlorocysta vitripennis_Small Bottle Cicada
 Chroicocephalus novaehollandiae_Silver Gull
 Cincloramphus cruralis_Brown Songlark
 Cincloramphus mathewsi_Rufous Songlark
@@ -151,12 +157,14 @@ Emblema pictum_Painted Finch
 Entomyzon cyanotis_Blue-faced Honeyeater
 Eolophus roseicapilla_Galah
 Eopsaltria australis_Eastern Yellow Robin
+Eopsaltria capito_Pale-yellow Robin
 Epthianura albifrons_White-fronted Chat
 Epthianura aurifrons_Orange Chat
 Epthianura crocea_Yellow Chat
 Epthianura tricolor_Crimson Chat
 Erythrogonys cinctus_Red-kneed Dotterel
 Eudynamys orientalis_Pacific Koel
+Eudyptula minor_Little Penguin
 Eurepa marginipennis_Mottled Bush Cricket
 Eurostopodus argus_Spotted Nightjar
 Eurostopodus mystacalis_White-throated Nightjar
@@ -190,6 +198,9 @@ Gryllotalpa australis_Southern Mole Cricket
 Gryllotalpa monanka_Dark Night Mole Cricket
 Gryllotalpa pluvialis_Chirping Mole Cricket
 Gymnorhina tibicen_Australian Magpie
+Haematopus fuliginosus_Sooty Oystercatcher
+Haematopus longirostris_Australian Pied Oystercatcher
+Haemopsalta aktites_Beach Squeaker
 Haemopsalta rubea_Red Squeaker
 Haliastur sphenurus_Whistling Kite
 Henicopsaltria eydouxii_Razor Grinder
@@ -237,6 +248,7 @@ Malurus assimilis_Purple-backed Fairywren
 Malurus cyaneus_Superb Fairywren
 Malurus lamberti_Variegated Fairywren
 Malurus leucopterus_White-winged Fairywren
+Malurus melanocephalus_Red-backed Fairywren
 Malurus splendens_Splendid Fairywren
 Manorina flavigula_Yellow-throated Miner
 Manorina melanocephala_Noisy Miner
@@ -285,6 +297,7 @@ Oriolus sagittatus_Olive-backed Oriole
 Orthonyx temminckii_Australian Logrunner
 Ovis aries_Sheep
 Pachycephala inornata_Gilberts Whistler
+Pachycephala olivacea_Olive Whistler
 Pachycephala pectoralis_Golden Whistler
 Pachycephala rufiventris_Rufous Whistler
 Palapsalta circumdata_Bronze Tree-Buzzer
@@ -319,6 +332,7 @@ Philemon citreogularis_Little Friarbird
 Philemon corniculatus_Noisy Friarbird
 Phylidonyris niger_White-cheeked Honeyeater
 Phylidonyris novaehollandiae_New Holland Honeyeater
+Phylidonyris pyrrhopterus_Crescent Honeyeater
 Pitta versicolor_Noisy Pitta
 Platalea flavipes_Yellow-billed Spoonbill
 Platalea regia_Royal Spoonbill
@@ -359,6 +373,7 @@ Pteropus poliocephalus_Grey-headed Flying-fox
 Pteropus scapulatus_Little Red Flying-fox
 Ptilinopus regina_Rose-crowned Fruit-Dove
 Ptilonorhynchus violaceus_Satin Bowerbird
+Ptiloris paradiseus_Paradise Riflebird
 Ptilotula fusca_Fuscous Honeyeater
 Ptilotula ornata_Yellow-plumed Honeyeater
 Ptilotula penicillata_White-plumed Honeyeater
@@ -380,7 +395,9 @@ Smicrornis brevirostris_Weebill
 Spatula rhynchotis_Australasian Shoveler
 Sphecotheres vieilloti_Australasian Figbird
 Spilopelia chinensis_Spotted Dove
+Stagonopleura bella_Beautiful Firetail
 Stagonopleura guttata_Diamond Firetail
+Stipiturus malachurus_Southern Emuwren
 Stizoptera bichenovii_Double-barred Finch
 Strepera graculina_Pied Currawong
 Strepera versicolor_Grey Currawong
@@ -409,6 +426,7 @@ Trichoglossus chlorolepidotus_Scaly-breasted Lorikeet
 Trichoglossus concinnus_Musk Lorikeet
 Trichoglossus moluccanus_Rainbow Lorikeet
 Trichosurus vulpecula_Common Brushtail Possum
+Tringa glareola_Wood Sandpiper
 Tringa nebularia_Common Greenshank
 Tringa stagnatilis_Marsh Sandpiper
 Turdus merula_Common Blackbird
