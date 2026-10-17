@@ -11,7 +11,7 @@ Acridotheres tristis_Common Myna
 Acrocephalus australis_Australian Reed Warbler
 Actitis hypoleucos_Common Sandpiper
 Adelotus brevis_Tusked Frog
-Aegotheles cristatus_Australian Owlet Nightjar
+Aegotheles cristatus_Australian Owlet-nightjar
 Ailuroedus crassirostris_Green Catbird
 Alauda arvensis_Eurasian Skylark
 Alectura lathami_Australian Brushturkey
@@ -37,9 +37,10 @@ Aprosmictus erythropterus_Red-winged Parrot
 Apus pacificus_Pacific Swift
 Aquila audax_Wedge-tailed Eagle
 Ardea alba_Great Egret
-Ardea coromanda_Eastern Cattle Egret
+Ardea coromanda_Eastern Cattle-Egret
 Ardea pacifica_White-necked Heron
 Ardea plumifera_Plumed Egret
+Ardeotis australis_Australian Bustard
 Artamus cinereus_Black-faced Woodswallow
 Artamus cyanopterus_Dusky Woodswallow
 Artamus leucorynchus_White-breasted Woodswallow
@@ -51,6 +52,7 @@ Ashbyia lovensis_Gibberbird
 Atrapsalta collina_Sandstone Squeaker
 Atrapsalta corticina_Bark Squeaker
 Atrapsalta encaustica_Black Squeaker
+Atrichornis rufescens_Rufous Scrub-bird
 Auscala spinosa_Creaking Branch Cicada
 Austronomus australis_White-striped Free-tailed Bat
 Austrosalomona falcata_Olive-green Coastal Katydid
@@ -58,12 +60,14 @@ Aviceda subcristata_Pacific Baza
 Aythya australis_Hardhead
 Barnardius zonarius_Australian Ringneck
 Birrima castanea_Red Tree-ticker
+Birrima varians_Black Tree-ticker
 Biziura lobata_Musk Duck
 Bos taurus_Cattle
 Botaurus dubius_Australian Little Bittern
 Botaurus poiciloptilus_Australasian Bittern
 Burbunga hillieri_Desert Screamer
-Burhinus grallarius_Bush Thick-knee
+Burhinus grallarius_Bush Stone-curlew
+Butorides atricapilla_Little Heron
 Cacatua galerita_Sulphur-crested Cockatoo
 Cacatua leadbeateri_Pink Cockatoo
 Cacatua sanguinea_Little Corella
@@ -136,7 +140,7 @@ Cystosoma saundersii_Bladder Cicada
 Dacelo novaeguineae_Laughing Kookaburra
 Daphoenositta chrysoptera_Varied Sittella
 Dasyornis brachypterus_Eastern Bristlebird
-Dendrocygna eytoni_Plumed Whistling Duck
+Dendrocygna eytoni_Plumed Whistling-Duck
 Dicaeum hirundinaceum_Mistletoebird
 Dicrurus bracteatus_Spangled Drongo
 Diemeniana euronotiana_Golden Twanger
@@ -154,11 +158,13 @@ Emblema pictum_Painted Finch
 Entomyzon cyanotis_Blue-faced Honeyeater
 Eolophus roseicapilla_Galah
 Eopsaltria australis_Eastern Yellow Robin
+Eopsaltria capito_Pale-yellow Robin
 Epthianura albifrons_White-fronted Chat
 Epthianura aurifrons_Orange Chat
 Epthianura crocea_Yellow Chat
 Epthianura tricolor_Crimson Chat
 Erythrogonys cinctus_Red-kneed Dotterel
+Esacus magnirostris_Beach Stone-curlew
 Eudynamys orientalis_Pacific Koel
 Eudyptula minor_Little Penguin
 Eurepa marginipennis_Mottled Bush Cricket
@@ -184,6 +190,7 @@ Geopelia cuneata_Diamond Dove
 Geopelia humeralis_Bar-shouldered Dove
 Geopelia placida_Peaceful Dove
 Gerygone fusca_Western Gerygone
+Gerygone levigaster_Mangrove Gerygone
 Gerygone mouki_Brown Gerygone
 Gerygone olivacea_White-throated Gerygone
 Glareola isabella_Australian Pratincole
@@ -191,12 +198,13 @@ Grallina cyanoleuca_Magpie-lark
 Grantiella picta_Painted Honeyeater
 Gryllodes sigillatus_Indian House Cricket
 Gryllotalpa australis_Southern Mole Cricket
-Gryllotalpa monanka_Dark Night Mole Cricket
 Gryllotalpa pluvialis_Chirping Mole Cricket
 Gymnorhina tibicen_Australian Magpie
 Haematopus fuliginosus_Sooty Oystercatcher
 Haematopus longirostris_Australian Pied Oystercatcher
+Haemopsalta aktites_Beach Squeaker
 Haemopsalta rubea_Red Squeaker
+Haliastur indus_Brahminy Kite
 Haliastur sphenurus_Whistling Kite
 Henicopsaltria eydouxii_Razor Grinder
 Heteroscenes pallidus_Pallid Cuckoo
@@ -206,7 +214,7 @@ Hirundapus caudacutus_White-throated Needletail
 Hirundo neoxena_Welcome Swallow
 Hydroprogne caspia_Caspian Tern
 Hylacola pyrrhopygia_Chestnut-rumped Heathwren
-Icthyophaga leucogaster_White-bellied Sea Eagle
+Icthyophaga leucogaster_White-bellied Sea-Eagle
 Lalage tricolor_White-winged Triller
 Lathamus discolor_Swift Parrot
 Leipoa ocellata_Malleefowl
@@ -224,15 +232,16 @@ Limnodynastes peronii_Striped Marsh Frog
 Limnodynastes salmini_Salmon-striped Frog
 Limnodynastes tasmaniensis_Spotted Marsh Frog
 Litoria caerulea_Green Tree Frog
+Litoria chloris_Red-eyed Tree Frog
 Litoria fallax_Eastern Dwarf Tree Frog
 Litoria freycineti_Wallum Rocket Frog
-Litoria gracilenta_Dainty Tree Frog
+Litoria gracilenta_Graceful Tree Frog
 Litoria latopalmata_Broad-palmed Rocket Frog
-Litoria lesueuri_Lesueur's Stony-creek Frog
+Litoria lesueuri_Stony Creek Frog
 Litoria peronii_Peron's Tree Frog
 Litoria quiritatus_Screaming Tree Frog
 Litoria revelata_Southern Whirring Tree Frog
-Litoria rubella_Desert Tree Frog
+Litoria rubella_Red Tree Frog
 Litoria tyleri_Tyler's Tree Frog
 Litoria verreauxii_Whistling Tree Frog
 Lophoictinia isura_Square-tailed Kite
@@ -262,6 +271,7 @@ Microcarbo melanoleucos_Little Pied Cormorant
 Microeca fascinans_Jacky Winter
 Milvus migrans_Black Kite
 Mirafra javanica_Singing Bushlark
+Mixophyes fasciolatus_Great Barred Frog
 Monarcha melanopsis_Black-faced Monarch
 Myiagra cyanoleuca_Satin Flycatcher
 Myiagra inquieta_Restless Flycatcher
@@ -282,6 +292,7 @@ Ninox strenua_Powerful Owl
 Northiella haematogaster_Greater Bluebonnet
 Notaden bennettii_Crucifix Frog
 Numenius minutus_Little Curlew
+Numenius phaeopus_Eurasian Whimbrel
 Nycticorax caledonicus_Nankeen Night Heron
 Nymphicus hollandicus_Cockatiel
 Ocyphaps lophotes_Crested Pigeon
@@ -291,10 +302,11 @@ Origma solitaria_Rockwarbler
 Oriolus sagittatus_Olive-backed Oriole
 Orthonyx temminckii_Australian Logrunner
 Ovis aries_Sheep
-Pachycephala inornata_Gilberts Whistler
+Pachycephala inornata_Gilbert's Whistler
+Pachycephala olivacea_Olive Whistler
 Pachycephala pectoralis_Golden Whistler
 Pachycephala rufiventris_Rufous Whistler
-Palapsalta circumdata_Bronze Tree-Buzzer
+Palapsalta circumdata_Bronze Tree-buzzer
 Pandion haliaetus_Osprey
 Paracrinia haswelli_Haswell's Froglet
 Paradina sp_Waltzing Matilda
@@ -304,7 +316,7 @@ Pardalotus striatus_Striated Pardalote
 Passer domesticus_House Sparrow
 Pauropsalta castanea_Flinders Squawker
 Pauropsalta mneme_Alarm Clock Squawker
-Pedionomus torquatus_Plains Wanderer
+Pedionomus torquatus_Plains-wanderer
 Pelecanus conspicillatus_Australian Pelican
 Peltohyas australis_Inland Dotterel
 Petaurus breviceps_Sugar Glider
@@ -326,6 +338,7 @@ Philemon citreogularis_Little Friarbird
 Philemon corniculatus_Noisy Friarbird
 Phylidonyris niger_White-cheeked Honeyeater
 Phylidonyris novaehollandiae_New Holland Honeyeater
+Phylidonyris pyrrhopterus_Crescent Honeyeater
 Pitta versicolor_Noisy Pitta
 Platalea flavipes_Yellow-billed Spoonbill
 Platalea regia_Royal Spoonbill
@@ -334,6 +347,7 @@ Platycercus eximius_Eastern Rosella
 Platyplectrum ornatum_Ornate Burrowing Frog
 Plectorhyncha lanceolata_Striped Honeyeater
 Plegadis falcinellus_Glossy Ibis
+Pluvialis fulva_Pacific Golden-Plover
 Podargus strigoides_Tawny Frogmouth
 Podiceps cristatus_Great Crested Grebe
 Poliocephalus poliocephalus_Hoary-headed Grebe
@@ -365,7 +379,9 @@ Psophodes olivaceus_Eastern Whipbird
 Pteropus poliocephalus_Grey-headed Flying-fox
 Pteropus scapulatus_Little Red Flying-fox
 Ptilinopus regina_Rose-crowned Fruit-Dove
+Ptilinopus superbus_Superb Fruit-Dove
 Ptilonorhynchus violaceus_Satin Bowerbird
+Ptiloris paradiseus_Paradise Riflebird
 Ptilotula fusca_Fuscous Honeyeater
 Ptilotula ornata_Yellow-plumed Honeyeater
 Ptilotula penicillata_White-plumed Honeyeater
@@ -377,7 +393,7 @@ Pyrrholaemus brunneus_Redthroat
 Pyrrholaemus sagittatus_Speckled Warbler
 Recurvirostra novaehollandiae_Red-necked Avocet
 Rhipidura albiscapa_Grey Fantail
-Rhipidura leucophrys_Willie-wagtail
+Rhipidura leucophrys_Willie Wagtail
 Rhipidura rufifrons_Australian Rufous Fantail
 Scythrops novaehollandiae_Channel-billed Cuckoo
 Sericornis frontalis_White-browed Scrubwren
@@ -387,6 +403,7 @@ Smicrornis brevirostris_Weebill
 Spatula rhynchotis_Australasian Shoveler
 Sphecotheres vieilloti_Australasian Figbird
 Spilopelia chinensis_Spotted Dove
+Stagonopleura bella_Beautiful Firetail
 Stagonopleura guttata_Diamond Firetail
 Stipiturus malachurus_Southern Emuwren
 Stizoptera bichenovii_Double-barred Finch
@@ -395,6 +412,7 @@ Strepera versicolor_Grey Currawong
 Struthidea cinerea_Apostlebird
 Sturnus vulgaris_Common Starling
 Sugomel nigrum_Black Honeyeater
+Symposiachrus trivirgatus_Australian Spectacled Monarch
 Synoicus chinensis_King Quail
 Synoicus ypsilophorus_Brown Quail
 Tachybaptus novaehollandiae_Australasian Grebe
@@ -406,6 +424,7 @@ Taeniopygia guttata_Zebra Finch
 Tamasa tristigma_Brown Bunyip
 Teleogryllus commodus_Black Field Cricket
 Telmapsalta hackeri_Paperbark Cicada
+Thalasseus bergii_Crested Tern
 Thinornis melanops_Black-fronted Dotterel
 Thopha saccata_Eastern Double Drummer
 Threskiornis molucca_Australian White Ibis
@@ -417,6 +436,7 @@ Trichoglossus chlorolepidotus_Scaly-breasted Lorikeet
 Trichoglossus concinnus_Musk Lorikeet
 Trichoglossus moluccanus_Rainbow Lorikeet
 Trichosurus vulpecula_Common Brushtail Possum
+Tringa glareola_Wood Sandpiper
 Tringa nebularia_Common Greenshank
 Tringa stagnatilis_Marsh Sandpiper
 Turdus merula_Common Blackbird
