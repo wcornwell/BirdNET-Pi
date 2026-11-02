@@ -1,5 +1,5 @@
 ﻿Parameter,Value
-Classifier name,run0-17-bn
+Classifier name,smithslake0-4-bn24
 Model formats,tflite
 Model save mode,replace
 Bandpass filter minimum,0
@@ -26,7 +26,7 @@ Upsampling mode,repeat
 Upsampling ratio,0.4
 Non-event prefixes,"Environment_, Homo sapiens_"
 Non-event keep classes,
-Species list,
-Species list entries,0
-Unlisted handling,
+Species list,/Users/z3484779/Documents/ecoacoustics/training_runs/configs/species/smithslake.txt
+Species list entries,325
+Unlisted handling,drop
 BirdNET model version,2.4
