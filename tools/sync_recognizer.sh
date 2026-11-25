@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 #
-# Copy a trained recognizer out of the OneDrive call_library into recognizers/,
-# and stage it so the next push carries it to the Pi.
+# Copy a trained recognizer out of the OneDrive call_library into recognizers/
+# and stage it. Runs on the LAPTOP, not on the Pi.
 #
-# Runs on the LAPTOP, not on the Pi. Deploy is: run this -> commit -> push ->
-# `git pull` on the Pi -> pick the model in the web UI (Tools > Settings > Model).
-# Dropping a .tflite in recognizers/ only adds it to the dropdown; it does not
-# switch the running model.
+# On the BirdNET-Go setup this only stages a local copy. It does not deploy:
+# use birdnet-go/deploy_model.sh to copy a model to the Pi and switch to it.
+# (The old BirdNET-Pi flow -- commit, push, `git pull` on the Pi -- lives on the
+# `birdnet-pi` branch.)
 #
 #   ./tools/sync_recognizer.sh                 # newest .tflite in call_library
 #   ./tools/sync_recognizer.sh --name run0-2-bn
@@ -16,13 +16,13 @@
 #   ./tools/sync_recognizer.sh --keep 3        # keep 3 models instead of 2
 #   ./tools/sync_recognizer.sh --no-prune      # keep every model already here
 #
-# The Pi keeps the 2 most recently deployed models -- the one it is running and
-# one to fall back to -- and older ones are removed in the same commit. Set
-# BIRDNETPI_HOST=user@host and the script will read the Pi's active MODEL over
-# ssh and refuse to prune it; without it you get a warning instead of a check.
+# recognizers/ keeps the 2 most recently staged models -- current and one to fall
+# back to -- and older ones are removed. Set BIRDNETPI_HOST=user@host and the
+# script will read the Pi's BirdNET-Go modelpath over ssh and refuse to prune the
+# model in use; without it you get a warning instead of a check.
 #
 # Only .tflite models can run on the Pi. The Perch arm of a dual run emits .npz,
-# which this script will not see and the Pi cannot load.
+# which this script will not see and BirdNET-Go cannot load.
 
 set -euo pipefail
 
@@ -56,7 +56,7 @@ done
 [[ -d "$SRC_DIR" ]] || die "no recognizers dir at $SRC_DIR (set CALL_LIBRARY to override)"
 # recognizers/ is not in the repo when it holds no models -- git tracks files, not
 # directories, and pruning the last model takes the directory with it.
-[[ -f "$REPO_ROOT/newinstaller.sh" ]] || die "$REPO_ROOT does not look like the BirdNET-Pi repo"
+[[ -d "$REPO_ROOT/birdnet-go" ]] || die "$REPO_ROOT does not look like the BirdNET-Go deployment repo"
 mkdir -p "$DEST_DIR"
 
 # Newest first. -f keeps this to plain files; the dir also holds CSVs and caches.
@@ -141,8 +141,7 @@ fi
 #
 # Keep the KEEP most recently deployed models, drop the rest. Two is the useful
 # number: the one the Pi is running, and the one to fall back to. Each model is
-# ~37 MB, the Pi carries the whole repo on an SD card, and the web UI lists every
-# .tflite it finds -- so an unpruned recognizers/ is both bulk and clutter.
+# ~37 MB, so an unpruned recognizers/ is just bulk.
 #
 # "Most recently deployed" is commit time, not mtime: mtime is set by whatever
 # order files were copied and says nothing about what was actually shipped. A
@@ -167,17 +166,19 @@ fi
 if [[ -n "$doomed" ]]; then
   # The active model must survive. The laptop cannot know which that is, so ask
   # the Pi when we can reach it; when we cannot, say plainly what is going.
+  # BIRDNETGO_CONFIG is the config path on the Pi; confirm it after the first install.
   active=""
   if [[ -n "${BIRDNETPI_HOST:-}" ]]; then
     active="$(ssh -o ConnectTimeout=8 -o BatchMode=yes "$BIRDNETPI_HOST" \
-      "sed -n 's/^MODEL=//p' ~/BirdNET-Pi/birdnet.conf" 2>/dev/null || true)"
+      "sed -n 's/^ *modelpath: *//p' ${BIRDNETGO_CONFIG:-~/birdnet-go-app/config/config.yaml} | head -1" 2>/dev/null \
+      | xargs -I{} basename {} .tflite || true)"
   fi
 
   printf '\nprune (keeping the %d most recently deployed):\n' "$KEEP"
   while read -r name; do
     [[ -n "$name" ]] || continue
     if [[ -n "$active" && "$name" == "$active" ]]; then
-      die "refusing to prune $name — the Pi is running it (MODEL=$active in birdnet.conf)"
+      die "refusing to prune $name — the Pi is running it (modelpath in the BirdNET-Go config)"
     fi
     printf '  remove      %s\n' "$name"
   done <<< "$doomed"
@@ -224,7 +225,7 @@ printf '.\n'
 
 if [[ $DO_COMMIT -eq 1 ]]; then
   git -C "$REPO_ROOT" commit --quiet -m "deploy $MODEL recognizer" -- recognizers/
-  printf 'committed. Push when ready, then `git pull` on the Pi.\n'
+  printf 'committed. Deploy with birdnet-go/deploy_model.sh.\n'
 else
-  printf 'Commit and push when ready, then `git pull` on the Pi.\n'
+  printf 'Commit if you want it tracked, then deploy with birdnet-go/deploy_model.sh.\n'
 fi

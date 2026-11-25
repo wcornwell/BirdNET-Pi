@@ -1,0 +1,30 @@
+# BirdNET-Go config: the model-related keys only, as a reference template.
+#
+# This is NOT the full config. The BirdNET-Go installer generates the real one on
+# the Pi; merge these keys into it. Key names come from BirdNET-Go's
+# doc/wiki/configuration-reference.md. Confirm the path and nesting on the Pi
+# after the first install, and do not commit secrets (passwords, tokens, Wi-Fi).
+
+birdnet:
+  version: "2.4"            # "2.4" or "3.0"
+
+  # Custom BirdNET model (fused 48 kHz / 3 s audio-to-logits .tflite).
+  # Empty = embedded stock model. The label file must sit beside the model and
+  # match its output size. Paths are as seen by the process: inside the
+  # container if it runs in Docker, so mount the models folder.
+  modelpath: ""             # e.g. /config/models/smithslake0-6-bn24.tflite
+  labelpath: ""             # e.g. /config/models/smithslake0-6-bn24_Labels.txt
+
+  # RANGE-FILTER TRAP: with a custom label file, leave latitude/longitude UNSET.
+  # The default range filter scores in stock BirdNET 2.4 label order and is
+  # paired index-by-index with your labels, so species filtering silently goes
+  # wrong. To filter by location with a custom model, use the v3 geomodel, which
+  # matches by scientific name:
+  # rangefilter:
+  #   model: "v3"
+  #   labelspath: ""        # set per the reference; check the key on your version
+
+# Models to load. Stock Perch v2 is comparison-only: our custom Perch heads
+# (*.npz) cannot be loaded. See CLAUDE.md.
+# models:
+#   enabled: ["birdnet"]    # add "perch_v2" to compare
