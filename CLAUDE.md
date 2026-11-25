@@ -24,13 +24,15 @@ Models are trained elsewhere and land in the shared OneDrive `call_library/recog
 ```bash
 ./tools/sync_recognizer.sh --list          # what is available, newest first
 ./tools/sync_recognizer.sh                 # stage the newest into recognizers/
-BIRDNETPI_HOST=wcornwell@100.77.3.46 birdnet-go/deploy_model.sh <name>   # copy to the Pi
+BIRDNETPI_HOST=wcornwell@<pi-tailscale-address> birdnet-go/deploy_model.sh <name>   # copy to the Pi
 ```
 
-`deploy_model.sh` copies only. Then set `birdnet.modelpath` / `birdnet.labelpath` in the
-Pi's BirdNET-Go config and restart. A model needs its `_Labels.txt` beside it. The Pi is
-reached over Tailscale (`100.77.3.46`), not `.local`: the work laptop cannot reach the
-home LAN.
+`deploy_model.sh` copies only, into `~/birdnet-go-app/data/models` on the Pi. Then set
+`birdnet.modelpath` / `birdnet.labelpath` (as `/data/models/<name>.tflite`) in
+`~/birdnet-go-app/config/config.yaml` and `sudo systemctl restart birdnet-go`. The stock
+model runs as ONNX there, so confirm a `.tflite` loads (`docker logs birdnet-go`). A model needs its `_Labels.txt` beside it. The Pi is
+reached over Tailscale (see `tailscale status`), not `.local`: the work laptop cannot
+reach the home LAN.
 
 Do not commit new `.tflite` files to `main` as a deploy mechanism; they are about 35 MB
 each and every one stays in history. Deploy is scp/rsync, not `git pull`.

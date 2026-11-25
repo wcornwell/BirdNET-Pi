@@ -12,8 +12,9 @@ birdnet:
   # Empty = embedded stock model. The label file must sit beside the model and
   # match its output size. Paths are as seen by the process: inside the
   # container if it runs in Docker, so mount the models folder.
-  modelpath: ""             # e.g. /config/models/smithslake0-6-bn24.tflite
-  labelpath: ""             # e.g. /config/models/smithslake0-6-bn24_Labels.txt
+  # Host ~/birdnet-go-app/data is mounted at /data, config at /config.
+  modelpath: ""             # e.g. /data/models/smithslake0-6-bn24.tflite
+  labelpath: ""             # e.g. /data/models/smithslake0-6-bn24_Labels.txt
 
   # RANGE-FILTER TRAP: with a custom label file, leave latitude/longitude UNSET.
   # The default range filter scores in stock BirdNET 2.4 label order and is
@@ -23,6 +24,18 @@ birdnet:
   # rangefilter:
   #   model: "v3"
   #   labelspath: ""        # set per the reference; check the key on your version
+
+# Audio source: the Yeti Nano matches by its ALSA description, NOT by
+# "sysdefault:CARD=Nano" (that string is rejected: "no device found matching").
+# realtime:
+#   audio:
+#     sources:
+#       - name: Yeti Nano
+#         device: "Yeti Nano, USB Audio"
+#         models: [birdnet]
+#     export:
+#       type: flac                  # lossless; the installer default is aac (lossy)
+#       retention: {policy: usage, maxusage: 80%, minclips: 10}
 
 # Models to load. Stock Perch v2 is comparison-only: our custom Perch heads
 # (*.npz) cannot be loaded. See CLAUDE.md.

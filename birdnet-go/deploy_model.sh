@@ -5,9 +5,10 @@
 # restart anything, because the config path and the Docker mounts are confirmed
 # only after the first install. It prints the lines to set.
 #
-#   BIRDNETPI_HOST=wcornwell@100.77.3.46 birdnet-go/deploy_model.sh smithslake0-6-bn24
+#   BIRDNETPI_HOST=wcornwell@<pi-tailscale-address> birdnet-go/deploy_model.sh smithslake0-6-bn24
 #
-# Override the destination with PI_MODEL_DIR (default ~/birdnet-go-app/models).
+# Destination on the Pi defaults to ~/birdnet-go-app/data/models, which the container
+# sees as /data/models. Override with PI_MODEL_DIR.
 
 set -euo pipefail
 
@@ -20,7 +21,7 @@ HOST="${BIRDNETPI_HOST:-}"
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SRC="$REPO_ROOT/recognizers"
-DEST="${PI_MODEL_DIR:-~/birdnet-go-app/models}"
+DEST="${PI_MODEL_DIR:-~/birdnet-go-app/data/models}"
 
 [[ -f "$SRC/$NAME.tflite" ]]      || die "no $SRC/$NAME.tflite (run tools/sync_recognizer.sh first)"
 [[ -f "$SRC/${NAME}_Labels.txt" ]] || die "no ${NAME}_Labels.txt: a model cannot load without its labels"
@@ -32,12 +33,15 @@ rsync -av --progress "$SRC/$NAME.tflite" "$SRC/${NAME}_Labels.txt" "$HOST:$DEST/
 
 cat <<EOF
 
-copied to $HOST:$DEST. Now, on the Pi, set in the BirdNET-Go config
-(paths as the container sees them, so check the mount):
+copied to $HOST:$DEST. Now set in ~/birdnet-go-app/config/config.yaml
+on the Pi (paths as the container sees them):
 
   birdnet:
-    modelpath: <models dir>/$NAME.tflite
-    labelpath: <models dir>/${NAME}_Labels.txt
+    modelpath: /data/models/$NAME.tflite
+    labelpath: /data/models/${NAME}_Labels.txt
 
-and restart BirdNET-Go. Leave latitude/longitude unset (see config.yaml).
+then: sudo systemctl restart birdnet-go
+Leave latitude/longitude unset with a custom model (see config.yaml).
+NOTE: the stock model runs as ONNX on the Pi; confirm a .tflite loads
+(check docker logs birdnet-go) before relying on it.
 EOF
